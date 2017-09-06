@@ -29,4 +29,17 @@ RSpec.describe Link, :type => :model do
     end
   end
 
+
+  it "gets the correct host" do
+    user = FactoryGirl.create(:user1)
+
+    user.links << Link.new({ id: 1, url: "http://www.GiThub.com", user_id: user.id })
+    expect(user.links[0].try_get_host).to eq "github"
+
+    user.links << Link.new({ id: 2, url: "http://www.faCeBook.org.jp", user_id: user.id })
+    expect(user.links[1].try_get_host).to eq "facebook"
+
+
+  end
+
 end

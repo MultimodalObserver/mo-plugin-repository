@@ -8,4 +8,9 @@ class Link < ApplicationRecord
 
   auto_strip_attributes :url
 
+  def try_get_host
+    su = SimpleUrl.new url
+    su.guess_host
+  end
+
 end
