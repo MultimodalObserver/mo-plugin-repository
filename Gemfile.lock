@@ -39,6 +39,8 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     arel (8.0.0)
+    auto_strip_attributes (2.1.0)
+      activerecord (>= 3.0)
     bcrypt (3.1.11)
     builder (3.2.3)
     byebug (9.1.0)
@@ -53,6 +55,11 @@ GEM
       devise (> 3.5.2, <= 4.3)
       rails (< 6)
     erubi (1.6.1)
+    factory_girl (4.8.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.8.0)
+      factory_girl (~> 4.8.0)
+      railties (>= 3.0.0)
     ffi (1.9.18)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
@@ -136,8 +143,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  auto_strip_attributes (~> 2.1)
   byebug
   devise_token_auth
+  factory_girl_rails
   listen (>= 3.0.5, < 3.2)
   omniauth
   puma (~> 3.7)
