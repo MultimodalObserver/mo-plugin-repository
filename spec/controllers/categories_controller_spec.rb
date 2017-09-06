@@ -72,7 +72,7 @@ RSpec.describe CategoriesController, type: :controller do
         put :update, params: { id: category.id, category: { shortname: "test-test-test        "} }
         expect(category.name).to eq(name)
         category.reload
-        expect(category.shortname).to eq("test-test-tests")
+        expect(category.shortname).to eq("test-test-test")
       end
 
       it "renders a JSON response with the category" do
