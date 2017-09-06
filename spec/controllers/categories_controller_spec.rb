@@ -32,7 +32,7 @@ RSpec.describe CategoriesController, type: :controller do
 
   describe "POST #create" do
 
-    login_as(FactoryGirl.build(:current_user1))
+    login_as(FactoryGirl.build(:user1))
 
     it "creates a new Category" do
       expect {
@@ -62,7 +62,7 @@ RSpec.describe CategoriesController, type: :controller do
 
   describe "PUT #update" do
 
-    login_as(FactoryGirl.build(:current_user1))
+    login_as(FactoryGirl.build(:user1))
 
     context "with valid params" do
 
@@ -98,7 +98,7 @@ RSpec.describe CategoriesController, type: :controller do
 
 
   describe "DELETE #destroy" do
-    login_as(FactoryGirl.build(:current_user1))
+    login_as(FactoryGirl.build(:user1))
     it "destroys the requested category" do
       category = FactoryGirl.build(:valid_category1)
       expect {
