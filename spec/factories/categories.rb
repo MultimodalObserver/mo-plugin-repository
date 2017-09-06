@@ -32,12 +32,6 @@ FactoryGirl.define do
     shortname  "ssd-aSd--"
   end
 
-  factory :valid_category_spaces, class: Category do
-    id 6
-    name "a    b "
-    shortname  "    sho   rtn   ame  "
-  end
-
 
   # Invalid categories
 
@@ -49,5 +43,11 @@ FactoryGirl.define do
   factory :invalid_category2, class: Category do
     name "a"
     shortname  "ss3d-aSd--"
+  end
+
+  factory :invalid_category_spaces, class: Category do
+    id 6
+    name "a    b "
+    shortname  "    sho   rtn   ame  "
   end
 end

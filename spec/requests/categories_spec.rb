@@ -1,5 +1,5 @@
 require 'rails_helper'
-=begin
+
 RSpec.describe "Categories", type: :request do
   describe "GET /categories" do
     it "works! (now write some real specs)" do
@@ -8,4 +8,3 @@ RSpec.describe "Categories", type: :request do
     end
   end
 end
-=end

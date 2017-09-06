@@ -14,8 +14,6 @@ RSpec.describe CategoriesController, type: :controller do
 
 
   describe "GET #index" do
-    login_as(FactoryGirl.build(:current_user1))
-
     it "returns a success response" do
       get :index
       expect(response).to be_success
@@ -24,9 +22,6 @@ RSpec.describe CategoriesController, type: :controller do
 
 
   describe "GET #show" do
-
-    login_as(FactoryGirl.build(:current_user1))
-
     it "returns a success response" do
       get :show, params: FactoryGirl.build(:valid_category1).attributes
       expect(response).to be_success
