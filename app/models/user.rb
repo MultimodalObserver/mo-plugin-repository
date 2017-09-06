@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
 
   include DeviseTokenAuth::Concerns::User
 
+  has_many :links
+
   enum status: [ :active, :banned, :deleted ]
 
   enum role: [ :normal_user, :moderator, :admin ]
