@@ -4,4 +4,9 @@ class User < ActiveRecord::Base
           :recoverable, :rememberable, :trackable, :validatable,
           :omniauthable #, :confirmable
   include DeviseTokenAuth::Concerns::User
+
+  enum status: [ :ok, :banned, :deleted ]
+
+  enum role: [ :normal, :moderator, :admin ]
+
 end
