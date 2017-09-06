@@ -6,15 +6,6 @@ class CategoriesController < ApplicationController
 
   # GET /categories
   def index
-
-    puts "-------------------"
-    puts "Current user:"
-    puts current_user
-    puts current_user.email
-    puts current_user.class
-    puts "------------------"
-
-
     @categories = Category.all
 
     render json: @categories
