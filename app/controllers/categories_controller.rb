@@ -1,8 +1,20 @@
 class CategoriesController < ApplicationController
+
   before_action :set_category, only: [:show, :update, :destroy]
+  before_action :authenticate_user!, only: [:create, :update, :destroy]
+
 
   # GET /categories
   def index
+
+    puts "-------------------"
+    puts "Current user:"
+    puts current_user
+    puts current_user.email
+    puts current_user.class
+    puts "------------------"
+
+
     @categories = Category.all
 
     render json: @categories
