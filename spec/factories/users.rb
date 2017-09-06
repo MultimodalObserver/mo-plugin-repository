@@ -7,7 +7,6 @@ FactoryGirl.define do
     email "felipe.xxx@mail.jp"
     password  "123456789"
     password_confirmation  "123456789"
-    role :normal
   end
 
   factory :user2, class: User do
@@ -15,7 +14,7 @@ FactoryGirl.define do
     email "   nOrMaL@mail.jp    "
     password  "123456789"
     password_confirmation  "123456789"
-    role :normal
+    role :normal_user
     status :deleted
   end
 
@@ -34,7 +33,7 @@ FactoryGirl.define do
     password  "123456789"
     password_confirmation  "123456789"
     role :admin
-    status :ok
+    status :active
   end
 
 

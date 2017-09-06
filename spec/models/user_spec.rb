@@ -24,17 +24,17 @@ RSpec.describe User, :type => :model do
   end
 
   it "has an easily accessible role attribute (and the default value works)" do
-    expect(FactoryGirl.build(:user1).role).to eq "normal"
-    expect(FactoryGirl.build(:user2).role).to eq "normal"
-    expect(FactoryGirl.build(:user3).role).to eq "moderator"
-    expect(FactoryGirl.build(:user4).role).to eq "admin"
+    expect(FactoryGirl.build(:user1).normal_user?).to be true
+    expect(FactoryGirl.build(:user2).normal_user?).to be true
+    expect(FactoryGirl.build(:user3).moderator?).to be true
+    expect(FactoryGirl.build(:user4).admin?).to be true
   end
 
   it "has an easily accessible status attribute (and the default value works)" do
-    expect(FactoryGirl.build(:user1).status).to eq "ok"
-    expect(FactoryGirl.build(:user2).status).to eq "deleted"
-    expect(FactoryGirl.build(:user3).status).to eq "banned"
-    expect(FactoryGirl.build(:user4).status).to eq "ok"
+    expect(FactoryGirl.build(:user1).active?).to be true
+    expect(FactoryGirl.build(:user2).deleted?).to be true
+    expect(FactoryGirl.build(:user3).banned?).to be true
+    expect(FactoryGirl.build(:user4).active?).to be true
   end
 
 end
