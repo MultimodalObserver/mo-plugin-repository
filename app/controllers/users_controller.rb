@@ -29,7 +29,9 @@ class UsersController < ApplicationController
 
   def change_status
     authorize @user
-    render json: {}, status: :ok
+    @user.status = params[:status]
+    @user.save
+    render json: @user, status: :ok
   end
 
 private
