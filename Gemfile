@@ -20,6 +20,7 @@ gem 'puma', '~> 3.7'
 gem 'devise_token_auth'
 gem 'omniauth'
 gem "auto_strip_attributes", "~> 2.1"
+gem 'pundit'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

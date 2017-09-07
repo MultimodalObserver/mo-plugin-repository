@@ -32,7 +32,7 @@ RSpec.describe CategoriesController, type: :controller do
 
   describe "POST #create" do
 
-    login_as(FactoryGirl.build(:user1))
+    login_as_admin
 
     it "creates a new Category" do
       expect {
@@ -56,13 +56,32 @@ RSpec.describe CategoriesController, type: :controller do
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq('application/json')
       end
-
     end
   end
 
+
+  describe "Unauthorized" do
+    login_as_moderator
+
+    it "cannot create" do
+      post :create, params: {}
+      expect(response).to have_http_status(:unauthorized)
+    end
+    it "cannot update" do
+      put :update, params: { id: 2 }
+      expect(response).to have_http_status(:unauthorized)
+    end
+    it "cannot destroy" do
+      delete :destroy, params: { id: 2 }
+      expect(response).to have_http_status(:unauthorized)
+    end
+  end
+
+
+
   describe "PUT #update" do
 
-    login_as(FactoryGirl.build(:user1))
+    login_as_admin
 
     context "with valid params" do
 
@@ -98,7 +117,9 @@ RSpec.describe CategoriesController, type: :controller do
 
 
   describe "DELETE #destroy" do
-    login_as(FactoryGirl.build(:user1))
+
+    login_as_admin
+
     it "destroys the requested category" do
       category = FactoryGirl.build(:valid_category1)
       expect {

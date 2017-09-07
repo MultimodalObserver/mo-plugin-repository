@@ -7,7 +7,6 @@ class CategoriesController < ApplicationController
   # GET /categories
   def index
     @categories = Category.all
-
     render json: @categories
   end
 
@@ -18,6 +17,7 @@ class CategoriesController < ApplicationController
 
   # POST /categories
   def create
+    authorize Category
     @category = Category.new(category_params)
 
     if @category.save
@@ -29,6 +29,9 @@ class CategoriesController < ApplicationController
 
   # PATCH/PUT /categories/1
   def update
+
+    authorize Category
+
     if @category.update(category_params)
       render json: @category
     else
@@ -38,6 +41,7 @@ class CategoriesController < ApplicationController
 
   # DELETE /categories/1
   def destroy
+    authorize Category
     @category.destroy
   end
 

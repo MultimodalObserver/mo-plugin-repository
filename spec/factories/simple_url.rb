@@ -15,7 +15,24 @@ FactoryGirl.define do
         ["https://....goo...gl.e.co......m.....?wwds", "https", "e"],
         ["https://..go..ogle.com?wwds", "https", "ogle"],
         ["https://go.ogle.....co...m.....?wwds", "https", "ogle"],
-        ["ftp://..a..b..c..d..?wwds", "ftp", "b"]
+        ["ftp://..a..b..c..d..?wwds", "ftp", "b"],
+        ["http://", "http", ""],
+        ["https://", "https", ""],
+        ["ftp://", "ftp", ""],
+        ["", "http", ""]
+      ]
+     }
+  end
+
+
+  factory :simple_urls_add_http, class: Array do
+    initialize_with {
+      [
+        ["htTtps://www.goOgle.com", "htTtps://www.goOgle.com"],
+        ["www.google.com.asdsa.erer.", "http://www.google.com.asdsa.erer."],
+        ["https://google.com", "https://google.com"],
+        ["google.com", "http://google.com"],
+        ["", "http://"]
       ]
      }
   end
