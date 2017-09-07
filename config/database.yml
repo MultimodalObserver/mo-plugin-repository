@@ -23,5 +23,7 @@ test:
   verbosity: silent
 
 production:
-  <<: *default
-  database: db/production.sqlite3
+  adapter: postgresql
+  database: database
+  pool: 5
+  timeout: 5000
