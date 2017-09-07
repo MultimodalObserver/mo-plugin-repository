@@ -4,3 +4,4 @@ User.create! :id => 3, :email => 'Cc@gmail.com', :password => '12345678', :passw
 User.create! :id => 4, :email => 'dD@gmail.com', :password => '12345678', :password_confirmation => '12345678'
 User.create! :id => 5, :email => 'EE@gmail.com', :password => '12345678', :password_confirmation => '12345678'
 User.create! :id => 6, :email => 'ff@gmail.com', :password => '12345678', :password_confirmation => '12345678'
+User.create! :id => 7, :email => 'GG@gmail.Com', :password => '12345678', :password_confirmation => '12345678'
