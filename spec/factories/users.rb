@@ -37,6 +37,36 @@ FactoryGirl.define do
   end
 
 
+  # Valid roles (for login)
+
+  factory :normal_user, class: User do
+    id 100
+    email "normal12345@mail.jp"
+    role :normal_user
+    password "123456789"
+    password_confirmation "123456789"
+    status :active
+  end
+
+  factory :moderator, class: User do
+    id 101
+    email "mod12345@mail.jp"
+    role :moderator
+    password "123456789"
+    password_confirmation "123456789"
+    status :active
+  end
+
+  factory :admin, class: User do
+    id 102
+    email "admin12345@mail.jp"
+    role :admin
+    password "123456789"
+    password_confirmation "123456789"
+    status :active
+  end
+
+
   # invalid
 
   factory :user1_invalid, class: User do

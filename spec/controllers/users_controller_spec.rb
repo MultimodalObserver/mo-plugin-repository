@@ -9,6 +9,11 @@ RSpec.describe UsersController, type: :controller do
     FactoryGirl.create(:user3)
     FactoryGirl.create(:user4)
 
+    # Used for login
+    FactoryGirl.create(:normal_user)
+    FactoryGirl.create(:moderator)
+    FactoryGirl.create(:admin)
+
   end
 
   describe "GET #index" do

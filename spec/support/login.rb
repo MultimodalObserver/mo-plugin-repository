@@ -1,26 +1,22 @@
 module Login
 
   def login_as_admin
-    user = User.new(email: "admin12345@mail.jp", role: :admin, password: "123456789", password_confirmation: "123456789")
-    user.save
+    user = FactoryGirl.build(:admin)
     login_as user
     return user
   end
 
   def login_as_moderator
-    user = User.new(email: "mod12345@mail.jp", role: :moderator, password: "123456789", password_confirmation: "123456789")
-    user.save
+    user = FactoryGirl.build(:moderator)
     login_as user
     return user
   end
 
   def login_as_normal_user
-    user = User.new(email: "normal12345@mail.jp", role: :normal_user, password: "123456789", password_confirmation: "123456789")
-    user.save
+    user = FactoryGirl.build(:normal_user)
     login_as user
     return user
   end
-
 
   def login_as(user)
     before(:each) do
