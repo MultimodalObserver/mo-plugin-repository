@@ -75,6 +75,9 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.6.6)
       mime-types (>= 1.16, < 4)
+    memory_test_fix (1.4.2)
+      activerecord (~> 5.0)
+      railties (~> 5.0)
     method_source (0.8.2)
     mime-types (3.1)
       mime-types-data (~> 3.2015)
@@ -170,6 +173,7 @@ DEPENDENCIES
   devise_token_auth
   factory_girl_rails
   listen (>= 3.0.5, < 3.2)
+  memory_test_fix
   omniauth
   puma (~> 3.7)
   pundit
