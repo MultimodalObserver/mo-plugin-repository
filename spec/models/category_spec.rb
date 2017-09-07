@@ -17,12 +17,9 @@ RSpec.describe Category, :type => :model do
   end
 
   it "is trimmed and squished" do
-
     category = Category.new({ :name => "   dd    d ", :shortname => " a-34fd-df   " })
     category.validate
-
     expect(category.name).to eq("dd d")
     expect(category.shortname).to eq("a-34fd-df")
   end
-
 end

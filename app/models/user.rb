@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
 
   has_many :links
 
-  enum status: [ :active, :banned, :deleted ]
+  enum status: [ :active, :banned ]
 
   enum role: [ :normal_user, :moderator, :admin ]
 
@@ -22,9 +22,6 @@ class User < ActiveRecord::Base
     status.to_sym == :banned
   end
 
-  def deleted?
-    status.to_sym == :deleted
-  end
 
   # Roles
 

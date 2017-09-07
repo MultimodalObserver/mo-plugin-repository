@@ -15,7 +15,7 @@ FactoryGirl.define do
     password  "123456789"
     password_confirmation  "123456789"
     role :normal_user
-    status :deleted
+    status :banned
   end
 
   factory :user3, class: User do

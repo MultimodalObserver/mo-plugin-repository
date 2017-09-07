@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe SimpleUrl, :type => :concern do
 
 
-  it "is divided correctly" do
+  it "is partitioned correctly" do
 
     urls = FactoryGirl.build :simple_urls
 

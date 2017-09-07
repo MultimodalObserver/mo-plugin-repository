@@ -32,7 +32,7 @@ RSpec.describe User, :type => :model do
 
   it "has an easily accessible status attribute (and the default value works)" do
     expect(FactoryGirl.build(:user1).active?).to be true
-    expect(FactoryGirl.build(:user2).deleted?).to be true
+    expect(FactoryGirl.build(:user2).banned?).to be true
     expect(FactoryGirl.build(:user3).banned?).to be true
     expect(FactoryGirl.build(:user4).active?).to be true
   end
