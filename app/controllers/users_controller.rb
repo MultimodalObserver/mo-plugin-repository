@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  before_action :set_user, only: [:show, :update, :destroy, :change_status]
+  before_action :set_user, only: [:show, :update, :destroy, :change_status, :change_role]
   before_action :authenticate_user!, only: [:me]
 
   def index
@@ -30,6 +30,13 @@ class UsersController < ApplicationController
   def change_status
     authorize @user
     @user.status = params[:status]
+    @user.save
+    render json: @user, status: :ok
+  end
+
+  def change_role
+    authorize @user
+    @user.role = params[:role]
     @user.save
     render json: @user, status: :ok
   end

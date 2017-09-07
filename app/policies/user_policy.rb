@@ -7,4 +7,10 @@ class UserPolicy < ApplicationPolicy
     return true if user.admin?
     return false
   end
+
+  def change_role?
+    return false if record.admin?
+    return true if user.admin?
+    return false
+  end
 end

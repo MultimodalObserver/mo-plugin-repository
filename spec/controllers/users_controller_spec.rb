@@ -28,7 +28,7 @@ RSpec.describe UsersController, type: :controller do
   describe "PUT #change_status (authorization only). Normal user changes someone's status" do
     login_as FactoryGirl.build(:user1)
     it "returns unauthorized" do
-      get :change_status, params: { :id => FactoryGirl.build(:user1).attributes['id'], :status => :banned }
+      put :change_status, params: { :id => FactoryGirl.build(:user1).attributes['id'], :status => :banned }
       expect(response).to have_http_status(:unauthorized)
     end
   end
@@ -38,22 +38,22 @@ RSpec.describe UsersController, type: :controller do
     moderator = login_as_moderator
 
     it "returns ok" do
-      get :change_status, params: { :id => FactoryGirl.build(:user2).attributes['id'], :status => :active }
+      put :change_status, params: { :id => FactoryGirl.build(:user2).attributes['id'], :status => :active }
       expect(response).to have_http_status(:ok)
     end
 
     it "returns unauthorized (moderator -> self)" do
-      get :change_status, params: { :id => moderator.id, :status => :active }
+      put :change_status, params: { :id => moderator.id, :status => :active }
       expect(response).to have_http_status(:unauthorized)
     end
 
     it "returns unauthorized (moderator -> moderator)" do
-      get :change_status, params: { :id => FactoryGirl.build(:user3).attributes['id'], :status => :active }
+      put :change_status, params: { :id => FactoryGirl.build(:user3).attributes['id'], :status => :active }
       expect(response).to have_http_status(:unauthorized)
     end
 
     it "returns unauthorized (moderator -> admin)" do
-      get :change_status, params: { :id => FactoryGirl.build(:user4).attributes['id'], :status => :active }
+      put :change_status, params: { :id => FactoryGirl.build(:user4).attributes['id'], :status => :active }
       expect(response).to have_http_status(:unauthorized)
     end
   end
@@ -63,17 +63,17 @@ RSpec.describe UsersController, type: :controller do
     admin = login_as_admin
 
     it "returns ok (admin -> self)" do
-      get :change_status, params: { :id => admin.id, :status => :active }
+      put :change_status, params: { :id => admin.id, :status => :active }
       expect(response).to have_http_status(:unauthorized)
     end
 
     it "returns ok (admin -> moderator)" do
-      get :change_status, params: { :id => FactoryGirl.build(:user3).attributes['id'], :status => :banned }
+      put :change_status, params: { :id => FactoryGirl.build(:user3).attributes['id'], :status => :banned }
       expect(response).to have_http_status(:ok)
     end
 
     it "returns ok (admin -> normal_user)" do
-      get :change_status, params: { :id => FactoryGirl.build(:user1).attributes['id'], :status => :banned }
+      put :change_status, params: { :id => FactoryGirl.build(:user1).attributes['id'], :status => :banned }
       expect(response).to have_http_status(:ok)
     end
   end
@@ -85,12 +85,50 @@ RSpec.describe UsersController, type: :controller do
     it "returns ok (admin -> self)" do
       user = FactoryGirl.build(:user1)
       expect(user.status.to_sym).to eq :active
-      get :change_status, params: { :id => user.id, :status => :banned }
+      put :change_status, params: { :id => user.id, :status => :banned }
       user.reload
       expect(user.status.to_sym).to eq :banned
-      get :change_status, params: { :id => user.id, :status => :active }
+      put :change_status, params: { :id => user.id, :status => :active }
       user.reload
       expect(user.status.to_sym).to eq :active
+    end
+  end
+
+
+  describe "PUT #change_role (authorization only)" do
+    login_as_normal_user
+    it "returns unauthorized" do
+      put :change_role, params: { :id => FactoryGirl.build(:user1).id, :role => :admin }
+      expect(response).to have_http_status(:unauthorized)
+    end
+  end
+
+  describe "PUT #change_role (authorization only)" do
+    login_as_moderator
+    it "returns unauthorized" do
+      put :change_role, params: { :id => FactoryGirl.build(:user1).id, :role => :moderator }
+      expect(response).to have_http_status(:unauthorized)
+    end
+  end
+
+  describe "PUT #change_role (authorization only)" do
+    login_as_admin
+    it "returns ok" do
+      put :change_role, params: { :id => FactoryGirl.build(:user1).id, :role => :normal_user }
+      expect(response).to have_http_status(:ok)
+    end
+
+    it "returns unauthorized because an admin can't change another admin's permissions (role)" do
+      put :change_role, params: { :id => FactoryGirl.build(:user4).id, :role => :normal_user }
+      expect(response).to have_http_status(:unauthorized)
+    end
+
+    it "changes role correctly" do
+      user = FactoryGirl.build(:user1)
+      expect(user.role.to_sym).to eq :normal_user
+      put :change_role, params: { :id => user.id, :role => :moderator }
+      user.reload
+      expect(user.role.to_sym).to eq :moderator
     end
   end
 

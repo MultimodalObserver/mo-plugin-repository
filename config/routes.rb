@@ -7,5 +7,6 @@ Rails.application.routes.draw do
 
   get '/users/me', to: 'users#me'
   put '/users/change_status', to: 'users#change_status'
+  put '/users/change_role', to: 'users#change_role'
 
 end
