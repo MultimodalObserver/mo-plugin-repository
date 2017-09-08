@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe CategoriesController, type: :controller do
 
 
-  before(:each) do
+  before(:all) do
     FactoryGirl.create(:category)
     FactoryGirl.create(:category)
     FactoryGirl.create(:category)

@@ -2,13 +2,9 @@ FactoryGirl.define do
   factory :plugin do
     name "a"
 
-    trait :github do
-      repository_url "https://github.com/FeloVilches/mo-plugin-repository"
-    end
+    trait :github { repository_url "https://github.com/FeloVilches/mo-plugin-repository" }
 
-    trait :bitbucket do
-      repository_url "https://bitbucket.org/caseywdunn/cnidaria2014"
-    end
+    trait :bitbucket { repository_url "https://bitbucket.org/caseywdunn/cnidaria2014" }
 
     association :user
   end

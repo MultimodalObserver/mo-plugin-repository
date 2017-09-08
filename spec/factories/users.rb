@@ -6,25 +6,11 @@ FactoryGirl.define do
     password  "123456789"
     password_confirmation  "123456789"
 
-    trait :normal_user do
-      role :normal_user
-    end
+    trait :normal_user { role :normal_user }
+    trait :moderator { role :moderator }
+    trait :admin { role :admin }
 
-    trait :moderator do
-      role :moderator
-    end
-
-    trait :admin do
-      role :admin
-    end
-
-    trait :active do
-      status :active
-    end
-
-    trait :banned do
-      status :banned
-    end
-
+    trait :active { status :active }
+    trait :banned { status :banned }
   end
 end
