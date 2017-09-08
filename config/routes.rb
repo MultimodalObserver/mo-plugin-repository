@@ -7,8 +7,15 @@ Rails.application.routes.draw do
 
   resources :users, only: [:index, :show]
 
-  get '/users/me', to: 'users#me'
-  put '/users/change_status', to: 'users#change_status'
-  put '/users/change_role', to: 'users#change_role'
+  namespace :users do
+    get '/me', action: :me
+    put '/change_status', action: :change_status
+    put '/change_role', action: :change_role
+  end
+
+  namespace :plugins do
+    get '/', action: :index
+  end
+
 
 end
