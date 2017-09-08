@@ -26,4 +26,28 @@ RSpec.describe SimpleUrl, :type => :concern do
       expect(su.full_url_default_scheme).to eq url[1]
     end
   end
+
+  it "adds http correctly to URLs that don't have scheme (using a specified scheme)" do
+
+    urls = FactoryGirl.build :simple_urls_add_custom_scheme
+
+    urls.each do |url|
+      su = SimpleUrl.new url[0], url[1]
+      expect(su.full_url_default_scheme).to eq url[2]
+    end
+  end
+
+
+  it "gets the path array correctly" do
+
+    urls = FactoryGirl.build :simple_urls_path_array
+
+    urls.each do |url|
+      su = SimpleUrl.new url[0]
+      expect(su.path_array).to eq url[1]
+    end
+  end
+
+
+
 end

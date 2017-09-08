@@ -8,6 +8,8 @@ class User < ActiveRecord::Base
 
   has_many :links
 
+  has_many :plugins
+
   enum status: [ :active, :banned ]
 
   enum role: [ :normal_user, :moderator, :admin ]

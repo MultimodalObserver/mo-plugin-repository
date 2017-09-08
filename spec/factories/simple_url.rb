@@ -37,4 +37,36 @@ FactoryGirl.define do
      }
   end
 
+  factory :simple_urls_add_custom_scheme, class: Array do
+    initialize_with {
+      [
+        ["htTtps://www.goOgle.com", nil, "htTtps://www.goOgle.com"],
+        ["www.google.com.asdsa.erer.", "FtP", "ftp://www.google.com.asdsa.erer."],
+        ["https://google.com", nil, "https://google.com"],
+        ["google.com", "https", "https://google.com"],
+        ["", "AlOhA", "aloha://"]
+      ]
+     }
+  end
+
+
+  factory :simple_urls_path_array, class: Array do
+    initialize_with {
+      [
+        ["htTtps://www.goOgle.com", [] ],
+        ["www.google.com.asdsa.erer/a/b//c///?asd34#.", ["a", "b", "c"] ],
+        ["www.google.com.asdsa.erer////a//b//c///?asd34#.", ["a", "b", "c"] ],
+        ["www.google.com.asdsa.erer/a/bc/////de///?asd34#.", ["a", "bc", "de"] ],
+        ["www.google.com.asdsa.erer/a///////?asd34#.", ["a"] ],
+        ["www.google.com.asdsa.erer///////a#aa?asd34#.", ["a"] ],
+        ["https://google.com/", [] ],
+        ["google.com/aaaa", ["aaaa"] ],
+        ["", [] ]
+      ]
+     }
+  end
+
+
+
+
 end
