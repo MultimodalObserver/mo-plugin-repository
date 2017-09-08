@@ -23,7 +23,7 @@ class Plugin < ApplicationRecord
       }
     end
 
-    return nil
+    return { }
 
   end
 

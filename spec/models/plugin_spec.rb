@@ -12,7 +12,7 @@ RSpec.describe Plugin, type: :model do
   end
 
   it "gives the correct releases url (Github)" do
-    plugin = FactoryGirl.build(:plugin, :repository_url => "https://github.com/FeloVilches/mo-plugin-repository")
+    plugin = FactoryGirl.build(:plugin)
     repo_url = plugin.get_repository_data
     expect(repo_url[:repo_type]).to eq 'github'
     expect(repo_url[:user_name]).to eq 'FeloVilches'
