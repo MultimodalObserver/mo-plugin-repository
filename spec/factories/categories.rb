@@ -1,6 +1,12 @@
 FactoryGirl.define do
   factory :category do
-    sequence :name { |n| "name#{n}" }
-    sequence :shortname { |n| "shortname#{n}" }
+
+    sequence :name do |n|
+      "name#{n}"
+    end
+
+    sequence :shortname do |n|
+      "shortname#{n}"
+    end
   end
 end
