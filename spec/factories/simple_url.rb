@@ -11,7 +11,6 @@ FactoryGirl.define do
         ["HTTps://www.google.com/asds#3434fsd", "https", "google"],
         ["www.google.com?aa=434&vb=343", "http", "google"],
         ["https://google.com?wwds", "https", "google"],
-
         ["https://....goo...gl.e.co......m.....?wwds", "https", "e"],
         ["https://..go..ogle.com?wwds", "https", "ogle"],
         ["https://go.ogle.....co...m.....?wwds", "https", "ogle"],

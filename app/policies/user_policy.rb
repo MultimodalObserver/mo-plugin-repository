@@ -1,5 +1,6 @@
 class UserPolicy < ApplicationPolicy
   def change_status?
+    return false if user.banned?
     return false if user.normal_user?
     return false if user.id == record.id
     return true if user.moderator? && record.normal_user?

@@ -1,19 +1,19 @@
 module Login
 
   def login_as_admin
-    user = FactoryGirl.build(:admin)
+    user = FactoryGirl.create(:user, :admin)
     login_as user
     return user
   end
 
   def login_as_moderator
-    user = FactoryGirl.build(:moderator)
+    user = FactoryGirl.create(:user, :moderator)
     login_as user
     return user
   end
 
   def login_as_normal_user
-    user = FactoryGirl.build(:normal_user)
+    user = FactoryGirl.create(:user)
     login_as user
     return user
   end

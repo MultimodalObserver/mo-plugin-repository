@@ -4,7 +4,7 @@ RSpec.describe Link, :type => :model do
 
 
   it "is valid with a valid URL format" do
-    user = FactoryGirl.create(:user1)
+    user = FactoryGirl.create(:user)
 
     FactoryGirl.build(:valid_urls).each_with_index do |url, i|
       user.links << Link.new({ id: i + 1, url: url, user_id: user.id })
@@ -18,7 +18,7 @@ RSpec.describe Link, :type => :model do
 
 
   it "has an invalid URL format" do
-    user = FactoryGirl.create(:user1)
+    user = FactoryGirl.create(:user)
 
     FactoryGirl.build(:invalid_urls).each_with_index do |url, i|
       user.links << Link.new({ id: i + 1, url: url, user_id: user.id })
@@ -31,7 +31,7 @@ RSpec.describe Link, :type => :model do
 
 
   it "gets the correct host" do
-    user = FactoryGirl.create(:user1)
+    user = FactoryGirl.create(:user)
 
     user.links << Link.new({ id: 1, url: "http://www.GiThub.com", user_id: user.id })
     expect(user.links[0].try_get_host).to eq "github"
