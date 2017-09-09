@@ -33,6 +33,7 @@ module MoPluginRepository
     config.middleware.use Rack::Cors do
       allow do
         origins '*'
+        resource '*'
         #resource '/*', :headers => :any, :methods => :patch
       end
     end
