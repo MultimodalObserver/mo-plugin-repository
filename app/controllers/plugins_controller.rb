@@ -2,9 +2,8 @@ class PluginsController < ApplicationController
 
   def index
     plugins = Plugin.includes(:categories).order("id DESC").paginate(:page => params[:page], :per_page => 10)
-    render json: plugins.to_json(:methods => :repository_data),
-    :include => { :categories => {:only => [:id, :short_name]}},
-    :except => [:created_at, :updated_at]
+    render_format_include_everything plugins
+
   end
 
 
@@ -14,7 +13,7 @@ class PluginsController < ApplicationController
 
     plugins = Plugin.joins(:categories).where(categories: { id: category.id }).order("id DESC").paginate(:page => params[:page], :per_page => 10)
 
-    render json: plugins.to_json(:methods => :repository_data), :except => [:created_at, :updated_at]
+    render_format_include_everything plugins
   end
 
 
@@ -24,9 +23,17 @@ class PluginsController < ApplicationController
 
     raise ActiveRecord::RecordNotFound if plugin.nil?
 
-    render json: plugin,
-    :include => { :categories => {:only => [:id, :short_name]}},
-    :except => [:created_at, :updated_at] if !plugin.nil?
+    render_format_include_everything plugin
+  end
+
+  private
+
+  def render_format_include_everything(plugin)
+    render json: plugin.to_json(
+    :methods => :repository_data,
+    :except => [:created_at, :updated_at],
+    :include => { :categories => {:only => [:id, :short_name]}}
+    )
   end
 
 end
