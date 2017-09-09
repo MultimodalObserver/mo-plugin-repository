@@ -11,6 +11,10 @@ RSpec.describe CategoriesController, type: :routing do
       expect(:get => "/categories/short-name").to route_to("categories#show", :category_name => "short-name")
     end
 
+    it "routes to plugins#filter_by_category" do
+      expect(:get => "/categories/category-short-name/plugins").to route_to("plugins#filter_by_category", :category_name => "category-short-name")
+    end
+
     it "routes to #create" do
       expect(:post => "/categories").to route_to("categories#create")
     end

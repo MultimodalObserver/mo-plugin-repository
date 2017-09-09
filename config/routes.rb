@@ -9,9 +9,9 @@ Rails.application.routes.draw do
 
   resources :categories, except: [:show]
 
-  namespace :categories do
-    get '/:category_name', action: :show
-    get '/:category_name/plugins', action: :plugins
+  scope :categories do
+    get '/:category_name', controller: :categories, action: :show
+    get '/:category_name/plugins', controller: :plugins, action: :filter_by_category
   end
 
   namespace :users do

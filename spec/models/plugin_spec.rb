@@ -6,8 +6,18 @@ RSpec.describe Plugin, type: :model do
     expect(plugin).to be_valid
   end
 
+  it "is downcased, trimmed and squished" do
+    plugin = FactoryGirl.create(:plugin, :name => "  aS  ", :short_name => "  a-Ad-V3  ", :repository_url => "  sss ", :home_page => " rr   ")
+    expect(plugin).to be_valid
+    expect(plugin.name).to eq "aS"
+    expect(plugin.short_name).to eq "a-ad-v3"
+    expect(plugin.repository_url).to eq "sss"
+    expect(plugin.home_page).to eq "rr"
+  end
+
+  
   it "has an empty repository url" do
-    plugin = FactoryGirl.build(:plugin, :repository_url => "")
+    plugin = FactoryGirl.build(:plugin, :blank_repo_url)
     expect(plugin).to_not be_valid
   end
 

@@ -9,16 +9,16 @@ class Plugin < ActiveRecord::Base
 
   validates :name, presence: true
   validates :short_name, presence: true
-  validates :short_name, format: { with: /\A[a-zA-Z0-9-]+\z/, message: "Only a-z A-Z and dash." }
+  validates :short_name, format: { with: /\A[a-z0-9-]+\z/, message: "Only a-z A-Z and dash." }
   validates :repository_url, presence: true
   validates :user_id, presence: true
 
   has_and_belongs_to_many :categories
 
-  before_save :downcase_fields
+  before_validation :downcase_fields
 
   def downcase_fields
-    self.short_name.downcase!
+    self.short_name.downcase! if !self.short_name.nil?
   end
 
 

@@ -22,17 +22,6 @@ class CategoriesController < ApplicationController
 
 
 
-  def plugins
-    category = Category.select(:id).limit(1).find_by(:short_name => params[:category_name].downcase)
-    raise ActiveRecord::RecordNotFound if category.nil?
-
-    plugins = Plugin.joins(:categories).where(categories: { id: category.id }).order("id DESC").paginate(:page => params[:page], :per_page => 10)
-
-    render json: plugins.to_json(:methods => :repository_data), :except => [:created_at, :updated_at]
-  end
-
-
-
   # POST /categories
   def create
     authorize Category

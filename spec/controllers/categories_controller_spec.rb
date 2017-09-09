@@ -21,7 +21,7 @@ RSpec.describe CategoriesController, type: :controller do
 
   describe "GET #show" do
     it "returns a success response" do
-      get :show, params: { :category_name => "short-name1" }#FactoryGirl.create(:category).attributes
+      get :show, params: { :category_name => "short-name1" }
       expect(response).to be_success
     end
   end

@@ -28,8 +28,8 @@ RSpec.describe Category, :type => :model do
     expect(FactoryGirl.build(:category, short_name: "       ")).to_not be_valid
   end
 
-  it "is trimmed and squished" do
-    category = FactoryGirl.build(:category, :name => "   dd    d ", :short_name => " a-34fd-df   ")
+  it "is downcased, trimmed and squished" do
+    category = FactoryGirl.create(:category, :name => "   dd    d ", :short_name => " a-34fD-DF   ")
     category.validate
     expect(category.name).to eq("dd d")
     expect(category.short_name).to eq("a-34fd-df")
