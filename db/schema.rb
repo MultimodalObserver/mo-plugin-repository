@@ -10,13 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170907234901) do
+ActiveRecord::Schema.define(version: 20170909155401) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name", null: false
-    t.string "shortname", null: false
+    t.string "short_name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "categories_plugins", id: false, force: :cascade do |t|
+    t.integer "plugin_id", null: false
+    t.integer "category_id", null: false
+    t.index ["plugin_id", "category_id"], name: "index_categories_plugins_on_plugin_id_and_category_id"
   end
 
   create_table "links", force: :cascade do |t|
@@ -35,6 +41,7 @@ ActiveRecord::Schema.define(version: 20170907234901) do
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "short_name"
     t.index ["user_id"], name: "index_plugins_on_user_id"
   end
 

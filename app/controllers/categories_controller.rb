@@ -1,6 +1,6 @@
 class CategoriesController < ApplicationController
 
-  before_action :set_category, only: [:show, :update, :destroy]
+  before_action :set_category, only: [:update, :destroy]
   before_action :authenticate_user!, only: [:create, :update, :destroy]
 
 
@@ -12,7 +12,12 @@ class CategoriesController < ApplicationController
 
   # GET /categories/1
   def show
-    render json: @category
+
+    category = Category.limit(1).find_by(:short_name => params[:category_name].downcase)
+
+    raise ActiveRecord::RecordNotFound if category.nil?
+
+    render json: category if !category.nil?
   end
 
   # POST /categories
@@ -53,6 +58,6 @@ class CategoriesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def category_params
-      params.fetch(:category).permit(:name, :shortname)
+      params.fetch(:category).permit(:name, :short_name)
     end
 end

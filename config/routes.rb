@@ -1,11 +1,17 @@
 Rails.application.routes.draw do
-  resources :categories
+
   mount_devise_token_auth_for 'User', at: 'auth'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   get '/', to: 'home#index'
 
   resources :users, only: [:index, :show]
+
+  resources :categories, except: [:show]
+
+  namespace :categories do
+    get '/:category_name', action: :show
+  end
 
   namespace :users do
     get '/me', action: :me
@@ -15,6 +21,7 @@ Rails.application.routes.draw do
 
   namespace :plugins do
     get '/', action: :index
+    get '/:plugin_name', action: :show
   end
 
 
