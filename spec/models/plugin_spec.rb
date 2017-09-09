@@ -13,7 +13,7 @@ RSpec.describe Plugin, type: :model do
 
   it "gives the correct releases url (Github)" do
     plugin = FactoryGirl.create(:plugin, :github)
-    repo_url = plugin.get_repository_data
+    repo_url = plugin.repository_data
     expect(repo_url[:repo_type]).to eq 'github'
     expect(repo_url[:user_name]).to eq 'FeloVilches'
     expect(repo_url[:repo_name]).to eq 'mo-plugin-repository'
@@ -21,7 +21,7 @@ RSpec.describe Plugin, type: :model do
 
   it "gives the correct releases url (Bitbucket)" do
     plugin = FactoryGirl.create(:plugin, :bitbucket)
-    repo_url = plugin.get_repository_data
+    repo_url = plugin.repository_data
     expect(repo_url[:repo_type]).to eq 'bitbucket'
     expect(repo_url[:user_name]).to eq 'caseywdunn'
     expect(repo_url[:repo_name]).to eq 'cnidaria2014'
@@ -29,7 +29,7 @@ RSpec.describe Plugin, type: :model do
 
   it "gives the correct releases url (Github) even if no HTTPS was included" do
     plugin = FactoryGirl.create(:plugin, :repository_url => "github.com/FeloVilches/mo-plugin-repository")
-    repo_url = plugin.get_repository_data
+    repo_url = plugin.repository_data
     expect(repo_url[:repo_type]).to eq 'github'
     expect(repo_url[:user_name]).to eq 'FeloVilches'
     expect(repo_url[:repo_name]).to eq 'mo-plugin-repository'
@@ -37,7 +37,7 @@ RSpec.describe Plugin, type: :model do
 
   it "gives the correct releases url (Bitbucket) even if no HTTPS was included" do
     plugin = FactoryGirl.create(:plugin, :repository_url => "bitbucket.org/username/reponame/")
-    repo_url = plugin.get_repository_data
+    repo_url = plugin.repository_data
     expect(repo_url[:repo_type]).to eq 'bitbucket'
     expect(repo_url[:user_name]).to eq 'username'
     expect(repo_url[:repo_name]).to eq 'reponame'

@@ -22,7 +22,7 @@ class Plugin < ActiveRecord::Base
   end
 
 
-  def get_repository_data
+  def repository_data
 
     simple_url = SimpleUrl.new repository_url, 'HTTPS'
 

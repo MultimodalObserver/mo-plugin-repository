@@ -28,7 +28,7 @@ class CategoriesController < ApplicationController
 
     plugins = Plugin.joins(:categories).where(categories: { id: category.id }).order("id DESC").paginate(:page => params[:page], :per_page => 10)
 
-    render json: plugins, :except => [:created_at, :updated_at]
+    render json: plugins.to_json(:methods => :repository_data), :except => [:created_at, :updated_at]
   end
 
 

@@ -4,7 +4,7 @@ class PluginsController < ApplicationController
 
   def index
     plugins = Plugin.includes(:categories).order("id DESC").paginate(:page => params[:page], :per_page => 10)
-    render json: plugins,
+    render json: plugins.to_json(:methods => :repository_data),
     :include => { :categories => {:only => [:id, :short_name]}},
     :except => [:created_at, :updated_at]
   end
