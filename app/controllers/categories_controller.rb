@@ -6,8 +6,8 @@ class CategoriesController < ApplicationController
 
   # GET /categories
   def index
-    @categories = Category.all
-    render json: @categories
+    categories = Category.all
+    render json: categories, :except => [:created_at, :updated_at]
   end
 
   # GET /categories/1
@@ -20,6 +20,19 @@ class CategoriesController < ApplicationController
     render json: category if !category.nil?
   end
 
+
+
+  def plugins
+    category = Category.select(:id).limit(1).find_by(:short_name => params[:category_name].downcase)
+    raise ActiveRecord::RecordNotFound if category.nil?
+
+    plugins = Plugin.joins(:categories).where(categories: { id: category.id }).order("id DESC").paginate(:page => params[:page], :per_page => 10)
+
+    render json: plugins, :except => [:created_at, :updated_at]
+  end
+
+
+
   # POST /categories
   def create
     authorize Category
@@ -31,6 +44,8 @@ class CategoriesController < ApplicationController
       render json: @category.errors, status: :unprocessable_entity
     end
   end
+
+
 
   # PATCH/PUT /categories/1
   def update

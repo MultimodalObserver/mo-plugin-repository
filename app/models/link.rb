@@ -1,6 +1,6 @@
 require 'uri'
 
-class Link < ApplicationRecord
+class Link < ActiveRecord::Base
 
   auto_strip_attributes :url
 

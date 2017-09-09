@@ -1,4 +1,4 @@
-class Plugin < ApplicationRecord
+class Plugin < ActiveRecord::Base
 
   belongs_to :user
 

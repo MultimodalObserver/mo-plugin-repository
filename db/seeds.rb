@@ -17,6 +17,7 @@ c6 = Category.create! :id => 6, :name => 'Brain waves', :short_name => 'brain-wa
 c7 = Category.create! :id => 7, :name => 'Video', :short_name => 'video'
 c8 = Category.create! :id => 8, :name => 'Facial expressions', :short_name => 'facial-expressions'
 c9 = Category.create! :id => 9, :name => 'Eye movement', :short_name => 'eye-movement'
+c10 = Category.create! :id => 10, :name => 'Keyboard', :short_name => 'keYBOArd'
 
 
 lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."

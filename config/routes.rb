@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
   namespace :categories do
     get '/:category_name', action: :show
+    get '/:category_name/plugins', action: :plugins
   end
 
   namespace :users do

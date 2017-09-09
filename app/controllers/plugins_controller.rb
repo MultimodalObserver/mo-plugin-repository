@@ -3,12 +3,10 @@ require 'pp'
 class PluginsController < ApplicationController
 
   def index
-
-    plugins = Plugin.includes(:categories).paginate(:page => params[:page], :per_page => 10)
-
+    plugins = Plugin.includes(:categories).order("id DESC").paginate(:page => params[:page], :per_page => 10)
     render json: plugins,
     :include => { :categories => {:only => [:id, :short_name]}},
-    :only => [:id, :name, :description, :repository_url, :home_page]
+    :except => [:created_at, :updated_at]
   end
 
   def show
@@ -18,7 +16,7 @@ class PluginsController < ApplicationController
 
     render json: plugin,
     :include => { :categories => {:only => [:id, :short_name]}},
-    :only => [:id, :name, :description, :repository_url, :home_page] if !plugin.nil?
+    :except => [:created_at, :updated_at] if !plugin.nil?
   end
 
 end
