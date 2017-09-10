@@ -1,7 +1,7 @@
 class PluginsController < ApplicationController
 
   def index
-    plugins = Plugin.includes(:categories).order("id DESC").paginate(:page => params[:page], :per_page => 3)
+    plugins = Plugin.includes(:categories).order("id DESC").paginate(:page => params[:page], :per_page => 10)
     render_format_include_everything plugins
 
   end
