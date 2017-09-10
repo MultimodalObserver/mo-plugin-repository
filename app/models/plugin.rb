@@ -13,7 +13,7 @@ class Plugin < ActiveRecord::Base
   validates :short_name, presence: true
   validates :short_name, format: { with: /\A[a-z0-9-]+\z/, message: "Only a-z A-Z and dash." }
 
-  enum repo_type: [ :github, :banned ]
+  enum repo_type: [ :github, :bitbucket ]
   validates :repo_user, presence: true
   validates :repo_name, presence: true
 

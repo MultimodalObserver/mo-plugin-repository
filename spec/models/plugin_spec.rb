@@ -1,9 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe Plugin, type: :model do
-  it "is a correct plugin" do
+  it "is a correct plugin using Bitbucket" do
     plugin = FactoryGirl.create(:plugin, :github)
     expect(plugin).to be_valid
+  end
+
+  it "is a correct plugin using Bitbucket" do
+    plugin = FactoryGirl.create(:plugin, :bitbucket)
+    expect(plugin).to be_valid
+    expect(plugin.repo_type.to_sym).to eq :bitbucket
   end
 
   it "is downcased, trimmed and squished" do
