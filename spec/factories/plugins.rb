@@ -4,13 +4,31 @@ FactoryGirl.define do
 
     sequence :short_name { |n| "short-name#{n}" }
 
-    repository_url "https://github.com/aaa/bbb"
+    r = Plugin.split_repository_data "https://github.com/aaa/bbb"
+    repo_type r[:repo_type]
+    repo_user r[:repo_user]
+    repo_name r[:repo_name]
 
-    trait :github { repository_url "https://github.com/FeloVilches/mo-plugin-repository" }
+    trait :github {
+      r = Plugin.split_repository_data "https://github.com/FeloVilches/mo-plugin-repository"
+      repo_type :github
+      repo_user r[:repo_user]
+      repo_name r[:repo_name]
+    }
 
-    trait :bitbucket { repository_url "https://bitbucket.org/caseywdunn/cnidaria2014" }
+    trait :bitbucket {
+      r = Plugin.split_repository_data "https://bitbucket.org/caseywdunn/cnidaria2014"
+      repo_type :bitbucket
+      repo_user r[:repo_user]
+      repo_name r[:repo_name]
+    }
 
-    trait :blank_repo_url { repository_url "" }
+    trait :blank_repo_url {
+      r = Plugin.split_repository_data ""
+      repo_type r[:repo_type]
+      repo_user r[:repo_user]
+      repo_name r[:repo_name]
+    }
 
     association :user
   end

@@ -35,7 +35,9 @@ ActiveRecord::Schema.define(version: 20170909155401) do
 
   create_table "plugins", force: :cascade do |t|
     t.string "name", null: false
-    t.string "repository_url", null: false
+    t.integer "repo_type", default: 0, null: false
+    t.string "repo_user", null: false
+    t.string "repo_name", null: false
     t.string "home_page"
     t.string "description"
     t.integer "user_id", null: false
