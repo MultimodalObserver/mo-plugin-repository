@@ -3,11 +3,12 @@ class Plugin < ActiveRecord::Base
   belongs_to :user
 
   auto_strip_attributes :name, :squish => true
-  auto_strip_attributes :short_name, :squish => true
+  auto_strip_attributes :short_name
   auto_strip_attributes :repo_type
   auto_strip_attributes :repo_user
   auto_strip_attributes :repo_name
   auto_strip_attributes :home_page
+  auto_strip_attributes :description, :squish => true
 
   validates :name, presence: true
   validates :short_name, presence: true
