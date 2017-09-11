@@ -18,7 +18,7 @@ RSpec.describe Plugin, type: :model do
   end
 
   it "is downcased, trimmed and squished" do
-    plugin = FactoryGirl.create(:plugin, :name => "  aS  ", :description => "  aa\n\n\n\n\n\n\n\n\naa  ", :short_name => "  a-Ad-V3  ", :repo_type => :github, :repo_user => " ff ", :repo_name => " cc   ", :home_page => " rr   ")
+    plugin = FactoryGirl.create(:plugin, :name => "  aS  ", :description => "  aa\n\n\n\n\n\n\n\n\naa  ", :short_name => "  a-Ad-V3  ", :repo_type => :github, :repo_user => " FF ", :repo_name => " cC   ", :home_page => " rR   ")
     expect(plugin).to be_valid
     expect(plugin.name).to eq "aS"
     expect(plugin.description).to eq "aa aa"
@@ -38,7 +38,7 @@ RSpec.describe Plugin, type: :model do
     expect { FactoryGirl.create(:plugin, :repo_type => :githubo, :repo_user => "a", :repo_name => "愛") }.to raise_error ArgumentError
     expect { FactoryGirl.create(:plugin, :repo_type => :github, :repo_user => "     ", :repo_name => "愛") }.to raise_error ActiveRecord::RecordInvalid
     expect { FactoryGirl.create(:plugin, :repo_type => :github, :repo_user => "  a   ", :repo_name => "") }.to raise_error ActiveRecord::RecordInvalid
-    expect { FactoryGirl.create(:plugin, :repo_type => :github, :repo_user => "  a   ", :repo_name => "  ") }.to raise_error ActiveRecord::RecordInvalid    
+    expect { FactoryGirl.create(:plugin, :repo_type => :github, :repo_user => "  a   ", :repo_name => "  ") }.to raise_error ActiveRecord::RecordInvalid
   end
 
 

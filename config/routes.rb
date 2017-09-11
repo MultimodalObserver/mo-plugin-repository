@@ -24,6 +24,8 @@ Rails.application.routes.draw do
     get '/', action: :index
     get '/:plugin_name', action: :show
     post '/', action: :create
+    put '/:id', action: :update
+    delete '/:id', action: :destroy
   end
 
 

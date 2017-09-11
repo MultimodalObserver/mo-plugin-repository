@@ -1,6 +1,7 @@
 class PluginsController < ApplicationController
 
-  before_action :authenticate_user!, only: [:create]
+  before_action :authenticate_user!, only: [:create, :update, :destroy]
+  before_action :set_plugin, only: [:update, :destroy]
 
   def index
     plugins = Plugin.includes(:categories).order("id DESC").paginate(:page => params[:page], :per_page => 10)
@@ -35,6 +36,29 @@ class PluginsController < ApplicationController
     end
   end
 
+
+  def update
+
+    authorize @plugin
+
+    # Can't change user!
+    p = plugin_params
+    p.delete :user_id
+    p.delete :user
+
+    if @plugin.update(p)
+      render json: @plugin
+    else
+      render json: @plugin.errors, status: :unprocessable_entity
+    end
+  end
+
+
+  def destroy
+    authorize @plugin
+    @plugin.destroy
+  end
+
   private
 
   def render_format_include_everything(plugin)
@@ -42,6 +66,10 @@ class PluginsController < ApplicationController
     :except => [:created_at, :updated_at],
     :include => { :categories => {:only => [:id, :short_name]}}
     )
+  end
+
+  def set_plugin
+    @plugin = Plugin.find(params[:id])
   end
 
   def plugin_params

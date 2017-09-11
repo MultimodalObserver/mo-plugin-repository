@@ -1,5 +1,7 @@
 class UserPolicy < ApplicationPolicy
   def change_status?
+    return false if user.nil?
+    return false if record.nil?
     return false if user.banned?
     return false if user.normal_user?
     return false if user.id == record.id
@@ -10,6 +12,8 @@ class UserPolicy < ApplicationPolicy
   end
 
   def change_role?
+    return false if user.nil?
+    return false if record.nil?
     return false if record.admin?
     return true if user.admin?
     return false

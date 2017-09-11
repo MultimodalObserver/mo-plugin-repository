@@ -29,6 +29,7 @@ class Plugin < ActiveRecord::Base
   def downcase_fields
     self.short_name.downcase! if !self.short_name.nil?
     self.repo_type.downcase! if !self.repo_type.nil?
+    self.repo_name.downcase! if !self.repo_name.nil?
     self.repo_user.downcase! if !self.repo_user.nil?
     self.home_page.downcase! if !self.home_page.nil?
   end

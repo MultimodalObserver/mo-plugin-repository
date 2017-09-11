@@ -119,4 +119,78 @@ RSpec.describe PluginsController, type: :controller do
   end
 
 
+  describe "PUT #plugin" do
+    user = login_as FactoryGirl.create(:user)
+    it "updates correctly" do
+      post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :bitbucket, :repo_name => "the-repo-namE  ") }
+      plugin_id = JSON.parse(response.body)["id"]
+      new_plugin = { :repo_type => :github, :name => "updated   name", :short_name => "  hehehe" }
+
+      put :update, params: { id: plugin_id, plugin: new_plugin }
+      expect(response).to have_http_status :ok
+      updated = Plugin.find(plugin_id)
+      expect(updated.name).to eq 'updated name'
+      expect(updated.short_name).to eq 'hehehe'
+      expect(updated.repo_type).to eq 'github'
+      expect(updated.repo_name).to eq 'the-repo-name'
+    end
+
+    it "doesn't update user_id (plugins can't be transferred from one user to another)" do
+
+      post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :bitbucket, :repo_name => 'xxxxxqqwweert') }
+
+      plugin_id = JSON.parse(response.body)["id"]
+      plugin_user_id = JSON.parse(response.body)["user_id"]
+      expect(plugin_user_id).to eq user.id
+
+      new_user = FactoryGirl.create(:user)
+
+      put :update, params: {
+        id: plugin_id,
+        plugin: {
+          user_id: new_user.id,
+          user: new_user,
+          repo_name: 'new-repo-name-software'
+        }
+      }
+      expect(response).to have_http_status :ok
+      updated = Plugin.find(plugin_id)
+      expect(updated.user_id).to eq user.id # User id remains the same
+      expect(updated.repo_name).to eq 'new-repo-name-software'
+    end
+
+    it "can't be updated if it's not a plugin owned by the logged in user" do
+      plugin = FactoryGirl.create :plugin, :bitbucket
+      put :update, params: { id: plugin.id, plugin: { repo_name: 'new-repo-name-software' } }
+      expect(response).to have_http_status :unauthorized
+    end
+  end
+
+
+  describe "DELETE #plugin" do
+    user = login_as FactoryGirl.create(:user)
+    it "destroys correctly" do
+      post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :bitbucket, :repo_name => "the-repo-namE  ") }
+      plugin_id = JSON.parse(response.body)["id"]
+      expect {
+        delete :destroy, params: { id: plugin_id }
+      }.to change(Plugin, :count).by(-1)
+      expect(response).to have_http_status :no_content
+    end
+
+    it "can't delete another user's plugin" do
+      plugin = FactoryGirl.create(:plugin, :bitbucket)
+      delete :destroy, params: { id: plugin.id }
+      expect(response).to have_http_status :unauthorized
+    end
+
+    it "can't be updated if it's not a plugin owned by the logged in user" do
+      plugin = FactoryGirl.create :plugin, :bitbucket
+      put :update, params: { id: plugin.id, plugin: { repo_name: 'new-repo-name-software' } }
+      expect(response).to have_http_status :unauthorized
+    end
+  end
+
+
+
 end
