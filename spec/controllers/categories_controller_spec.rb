@@ -38,6 +38,12 @@ RSpec.describe CategoriesController, type: :controller do
       }.to change(Category, :count).by(1)
     end
 
+    it "creates a category that already exists" do
+      FactoryGirl.create(:category, short_name: " VeRy-beautifuL-category   ")
+      post :create, params: { category: FactoryGirl.attributes_for(:category, short_name: "   very-BEAUTIFUL-categorY   ") }
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+
     context "with valid params" do
 
       it "renders a JSON response with the new category" do
@@ -111,6 +117,21 @@ RSpec.describe CategoriesController, type: :controller do
         expect(category.short_name).to eq(short_name)
       end
     end
+
+
+    context "updating and setting short-name to something that already exists" do
+      it "throws error" do
+        FactoryGirl.create(:category, :short_name => " alReady-exISts   ")
+        category = FactoryGirl.create(:category, :short_name => 'old-NAME  ')
+        put :update, params: { id: category.id, category: { short_name: "  already-EXISTS "} }
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.content_type).to eq('application/json')
+        category.reload
+        expect(category.short_name).to eq('old-name')
+      end
+    end
+
+
   end
 
 

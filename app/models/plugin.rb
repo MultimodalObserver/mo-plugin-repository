@@ -17,6 +17,7 @@ class Plugin < ActiveRecord::Base
   enum repo_type: [ :github, :bitbucket ]
   validates :repo_user, presence: true
   validates :repo_name, presence: true
+  validates :repo_type, presence: true
 
   validates :user_id, presence: true
 

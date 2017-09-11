@@ -57,9 +57,66 @@ RSpec.describe PluginsController, type: :controller do
         get :filter_by_category, params: { :category_name => "I-DONT-EXIST" }
       }.to raise_error ActiveRecord::RecordNotFound
     end
-
   end
 
+
+
+  describe "POST #plugin correctly authorized" do
+
+    login_as_normal_user
+
+    it "creates a new Plugin" do
+      expect {
+        post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :bitbucket) }
+      }.to change(Plugin, :count).by(1)
+      plugin = JSON.parse(response.body)
+      expect(plugin["repo_type"]).to eq "bitbucket"
+    end
+
+    it "creates a new Plugin with a short-name that already exists (throws error)" do
+      FactoryGirl.create(:plugin, :bitbucket, :short_name => ' short-name-already-EXISTS  ')
+      expect {
+        post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :bitbucket, :short_name => ' short-NAME-Already-exists  ') }
+      }.to change(Plugin, :count).by(0)
+      expect(response).to have_http_status :unprocessable_entity
+    end
+
+    it "creates a new Plugin without repository (throws error)" do
+      expect {
+        attr = FactoryGirl.attributes_for(:plugin, :bitbucket)
+        attr.delete :repo_type # Remove repository type
+        post :create, params: { plugin: attr }
+      }.to change(Plugin, :count).by(0)
+      expect(response).to have_http_status :unprocessable_entity
+    end
+
+    it "throws an error if params are invalid" do
+      post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :bitbucket, :short_name => '$50') }
+      expect(response).to have_http_status :unprocessable_entity
+
+      post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :bitbucket, :short_name => '503%') }
+      expect(response).to have_http_status :unprocessable_entity
+
+      post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :bitbucket, :short_name => ' 55 ', :name => '   ') }
+      expect(response).to have_http_status :unprocessable_entity
+    end
+  end
+
+
+  describe "POST #plugin unauthorized (banned user)" do
+    login_as FactoryGirl.create(:user, :banned)
+    it "creates a new Plugin (gets Unauthorized error)" do
+      post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :bitbucket) }
+      expect(response).to have_http_status :unauthorized
+    end
+  end
+
+  describe "POST #plugin unauthorized (without login)" do
+    it "creates a new Plugin (gets Unauthorized error)" do
+      post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :bitbucket) }
+      expect(response).to have_http_status :unauthorized
+    end
+  end
 
 
 end

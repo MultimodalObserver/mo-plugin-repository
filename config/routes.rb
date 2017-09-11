@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   namespace :plugins do
     get '/', action: :index
     get '/:plugin_name', action: :show
+    post '/', action: :create
   end
 
 

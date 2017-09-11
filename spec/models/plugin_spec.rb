@@ -14,7 +14,7 @@ RSpec.describe Plugin, type: :model do
 
   it "has a unique short name" do
     FactoryGirl.create(:plugin, short_name: "aaa ")
-    expect { FactoryGirl.create(:plugin, short_name: "   AaA ") }.to raise_error ActiveRecord::RecordInvalid 
+    expect { FactoryGirl.create(:plugin, short_name: "   AaA ") }.to raise_error ActiveRecord::RecordInvalid
   end
 
   it "is downcased, trimmed and squished" do
@@ -29,10 +29,19 @@ RSpec.describe Plugin, type: :model do
   end
 
 
-  it "has an empty repository url" do
+  it "validates empty repository urls" do
     plugin = FactoryGirl.build(:plugin, :blank_repo_url)
     expect(plugin).to_not be_valid
   end
+
+  it "validates valid repository urls" do
+    expect { FactoryGirl.create(:plugin, :repo_type => :githubo, :repo_user => "a", :repo_name => "愛") }.to raise_error ArgumentError
+    expect { FactoryGirl.create(:plugin, :repo_type => :github, :repo_user => "     ", :repo_name => "愛") }.to raise_error ActiveRecord::RecordInvalid
+    expect { FactoryGirl.create(:plugin, :repo_type => :github, :repo_user => "  a   ", :repo_name => "") }.to raise_error ActiveRecord::RecordInvalid
+    expect { FactoryGirl.create(:plugin, :repo_type => :github, :repo_user => "  a   ", :repo_name => "  ") }.to raise_error ActiveRecord::RecordInvalid    
+  end
+
+
 
 
 end

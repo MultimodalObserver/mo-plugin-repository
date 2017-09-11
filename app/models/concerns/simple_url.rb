@@ -20,7 +20,10 @@ class SimpleUrl
   attr_accessor :path_array
 
   def initialize(string_url, default_scheme = 'http')
-    default_scheme.downcase! if !default_scheme.nil?
+    if !default_scheme.nil?
+      default_scheme.downcase!
+      default_scheme.strip!
+    end
     @full_url = string_url.strip
     @full_url_default_scheme = set_default_scheme @full_url, default_scheme
     arr = parse @full_url_default_scheme
