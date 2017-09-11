@@ -16,6 +16,11 @@ RSpec.describe Category, :type => :model do
     expect(FactoryGirl.build(:category, short_name: "  asda--sd-sASA-SaSSA ")).to be_valid
   end
 
+  it "has a unique short name" do
+    FactoryGirl.create(:category, short_name: "aaa ")
+    expect { FactoryGirl.create(:category, short_name: "   AaA ") }.to raise_error ActiveRecord::RecordInvalid
+  end
+
   it "has invalid name" do
     expect(FactoryGirl.build(:category, short_name: "")).to_not be_valid
     expect(FactoryGirl.build(:category, short_name: "   ")).to_not be_valid
