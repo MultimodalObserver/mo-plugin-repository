@@ -22,39 +22,39 @@ RSpec.describe PluginsController, type: :controller do
   end
 
 
-  describe "GET #filter_by_category" do
+  describe "GET #filter_by_tag" do
 
-    cat = FactoryGirl.create(:category, :short_name => 'categORY-9999')
-    empty_cat = FactoryGirl.create(:category, :short_name => 'categORY-EmpTY')
+    cat = FactoryGirl.create(:tag, :short_name => 'tAg-9999')
+    empty_cat = FactoryGirl.create(:tag, :short_name => 'categORY-EmpTY')
 
     cat.plugins << FactoryGirl.create(:plugin)
     cat.plugins << FactoryGirl.create(:plugin)
     cat.plugins << FactoryGirl.create(:plugin)
 
     it "returns a success response" do
-      get :filter_by_category, params: { :category_name => "category-9999" }
+      get :filter_by_tag, params: { :tag_name => "tag-9999" }
       expect(response).to be_success
     end
 
-    it "returns an array of plugins that belong to that category (with correct pagination)" do
-      get :filter_by_category, params: { :category_name => "category-9999", :page => 1 }
+    it "returns an array of plugins that belong to that tag (with correct pagination)" do
+      get :filter_by_tag, params: { :tag_name => "tag-9999", :page => 1 }
       plugins = JSON.parse(response.body)
       expect(plugins.count).to eq 3
 
-      get :filter_by_category, params: { :category_name => "category-9999", :page => 2 }
+      get :filter_by_tag, params: { :tag_name => "tag-9999", :page => 2 }
       plugins = JSON.parse(response.body)
       expect(plugins.count).to eq 0
     end
 
     it "returns an empty array of plugins" do
-      get :filter_by_category, params: { :category_name => "categORY-EmpTY" }
+      get :filter_by_tag, params: { :tag_name => "categORY-EmpTY" }
       plugins = JSON.parse(response.body)
       expect(plugins.count).to eq 0
     end
 
-    it "returns an error because category doesn't exist" do
+    it "returns an error because tag doesn't exist" do
       expect {
-        get :filter_by_category, params: { :category_name => "I-DONT-EXIST" }
+        get :filter_by_tag, params: { :tag_name => "I-DONT-EXIST" }
       }.to raise_error ActiveRecord::RecordNotFound
     end
   end

@@ -12,19 +12,6 @@
 
 ActiveRecord::Schema.define(version: 20170909155401) do
 
-  create_table "categories", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "short_name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "categories_plugins", id: false, force: :cascade do |t|
-    t.integer "plugin_id", null: false
-    t.integer "category_id", null: false
-    t.index ["plugin_id", "category_id"], name: "index_categories_plugins_on_plugin_id_and_category_id"
-  end
-
   create_table "links", force: :cascade do |t|
     t.string "url", null: false
     t.integer "user_id", null: false
@@ -45,6 +32,19 @@ ActiveRecord::Schema.define(version: 20170909155401) do
     t.datetime "updated_at", null: false
     t.string "short_name"
     t.index ["user_id"], name: "index_plugins_on_user_id"
+  end
+
+  create_table "plugins_tags", id: false, force: :cascade do |t|
+    t.integer "plugin_id", null: false
+    t.integer "tag_id", null: false
+    t.index ["plugin_id", "tag_id"], name: "index_plugins_tags_on_plugin_id_and_tag_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "short_name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|

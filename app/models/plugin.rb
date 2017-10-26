@@ -21,7 +21,7 @@ class Plugin < ActiveRecord::Base
 
   validates :user_id, presence: true
 
-  has_and_belongs_to_many :categories
+  has_and_belongs_to_many :tags
 
   before_validation :downcase_fields
 

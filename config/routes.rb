@@ -7,11 +7,11 @@ Rails.application.routes.draw do
 
   resources :users, only: [:index, :show]
 
-  resources :categories, except: [:show]
+  resources :tags, except: [:show]
 
-  scope :categories do
-    get '/:category_name', controller: :categories, action: :show
-    get '/:category_name/plugins', controller: :plugins, action: :filter_by_category
+  scope :tags do
+    get '/:tag_name', controller: :tags, action: :show
+    get '/:tag_name/plugins', controller: :plugins, action: :filter_by_tag
   end
 
   namespace :users do

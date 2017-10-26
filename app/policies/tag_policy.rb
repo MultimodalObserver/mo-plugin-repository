@@ -1,4 +1,4 @@
-class CategoryPolicy < ApplicationPolicy
+class TagPolicy < ApplicationPolicy
   def create?
     return false if user.nil?
     user.admin?
