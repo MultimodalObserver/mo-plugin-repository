@@ -26,7 +26,74 @@ RSpec.describe TagsController, type: :controller do
     end
   end
 
+  describe "GET #search" do
+    it "returns empty" do
+      get :search, params: { }
+      expect(response).to be_success
+      expect(JSON.parse response.body).to eq []
 
+      get :search, params: { limit: 45 }
+      expect(response).to be_success
+      expect(JSON.parse response.body).to eq []
+    end
+
+    it "returns search results" do
+
+      FactoryGirl.create(:tag, short_name: "ahello")
+      FactoryGirl.create(:tag, short_name: "hello")
+      FactoryGirl.create(:tag, short_name: "hellooo")
+      FactoryGirl.create(:tag, short_name: "hell")
+      FactoryGirl.create(:tag, short_name: "helllll")
+      FactoryGirl.create(:tag, short_name: "helloooooo")
+
+      get :search, params: { q: "he" }
+      expect(response).to be_success
+      parsed = JSON.parse response.body
+      expect(parsed.length).to eq 3
+      expect(parsed[0]["short_name"]).to eq "hello"
+      expect(parsed[1]["short_name"]).to eq "hellooo"
+      expect(parsed[2]["short_name"]).to eq "hell"
+
+      get :search, params: { q: "he", limit: 15 }
+      expect(response).to be_success
+      parsed = JSON.parse response.body
+      expect(parsed.length).to eq 5
+      expect(parsed[0]["short_name"]).to eq "hello"
+      expect(parsed[1]["short_name"]).to eq "hellooo"
+      expect(parsed[2]["short_name"]).to eq "hell"
+      expect(parsed[3]["short_name"]).to eq "helllll"
+      expect(parsed[4]["short_name"]).to eq "helloooooo"
+
+      get :search, params: { q: "he" }
+      expect(response).to be_success
+      parsed = JSON.parse response.body
+      expect(parsed.length).to eq 3
+      expect(parsed[0]["short_name"]).to eq "hello"
+      expect(parsed[1]["short_name"]).to eq "hellooo"
+      expect(parsed[2]["short_name"]).to eq "hell"
+
+      get :search, params: { q: "Hello", limit: 15 }
+      expect(response).to be_success
+      parsed = JSON.parse response.body
+      expect(parsed.length).to eq 3
+      expect(parsed[0]["short_name"]).to eq "hello"
+      expect(parsed[1]["short_name"]).to eq "hellooo"
+      expect(parsed[2]["short_name"]).to eq "helloooooo"
+
+      get :search, params: { q: "Hello", limit: 2 }
+      expect(response).to be_success
+      parsed = JSON.parse response.body
+      expect(parsed.length).to eq 2
+      expect(parsed[0]["short_name"]).to eq "hello"
+      expect(parsed[1]["short_name"]).to eq "hellooo"
+
+      get :search, params: { q: "A", limit: 2 }
+      expect(response).to be_success
+      parsed = JSON.parse response.body
+      expect(parsed.length).to eq 1
+      expect(parsed[0]["short_name"]).to eq "ahello"
+    end
+  end
 
   describe "POST #create" do
 
@@ -66,11 +133,6 @@ RSpec.describe TagsController, type: :controller do
 
   describe "Unauthorized" do
     login_as_moderator
-
-    it "cannot create" do
-      post :create, params: {}
-      expect(response).to have_http_status(:unauthorized)
-    end
     it "cannot update" do
       put :update, params: { id: 2 }
       expect(response).to have_http_status(:unauthorized)

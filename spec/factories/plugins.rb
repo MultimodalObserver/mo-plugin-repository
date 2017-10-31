@@ -16,12 +16,12 @@ FactoryGirl.define do
       repo_name r[:repo_name]
     }
 
-    trait :bitbucket {
-      r = Plugin.split_repository_data "https://bitbucket.org/caseywdunn/cnidaria2014"
-      repo_type :bitbucket
-      repo_user r[:repo_user]
-      repo_name r[:repo_name]
-    }
+    #trait :github {
+    #  r = Plugin.split_repository_data "https://bitbucket.org/caseywdunn/cnidaria2014"
+    #  repo_type :github
+    #  repo_user r[:repo_user]
+    #  repo_name r[:repo_name]
+    #}
 
     trait :blank_repo_url {
       r = Plugin.split_repository_data ""

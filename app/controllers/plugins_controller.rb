@@ -73,7 +73,7 @@ class PluginsController < ApplicationController
   end
 
   def plugin_params
-    params.fetch(:plugin).permit(:name, :short_name, :user_id, :repo_user, :repo_name, :repo_type)
+    params.fetch(:plugin).permit(:name, :short_name, :repo_user, :repo_name, :repo_type)
   end
 
 end

@@ -67,23 +67,23 @@ RSpec.describe PluginsController, type: :controller do
 
     it "creates a new Plugin" do
       expect {
-        post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :bitbucket) }
+        post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :github) }
       }.to change(Plugin, :count).by(1)
       plugin = JSON.parse(response.body)
-      expect(plugin["repo_type"]).to eq "bitbucket"
+      expect(plugin["repo_type"]).to eq "github"
     end
 
     it "creates a new Plugin with a short-name that already exists (throws error)" do
-      FactoryGirl.create(:plugin, :bitbucket, :short_name => ' short-name-already-EXISTS  ')
+      FactoryGirl.create(:plugin, :github, :short_name => ' short-name-already-EXISTS  ')
       expect {
-        post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :bitbucket, :short_name => ' short-NAME-Already-exists  ') }
+        post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :github, :short_name => ' short-NAME-Already-exists  ') }
       }.to change(Plugin, :count).by(0)
       expect(response).to have_http_status :unprocessable_entity
     end
 
     it "creates a new Plugin without repository (throws error)" do
       expect {
-        attr = FactoryGirl.attributes_for(:plugin, :bitbucket)
+        attr = FactoryGirl.attributes_for(:plugin, :github)
         attr.delete :repo_type # Remove repository type
         post :create, params: { plugin: attr }
       }.to change(Plugin, :count).by(0)
@@ -91,13 +91,13 @@ RSpec.describe PluginsController, type: :controller do
     end
 
     it "throws an error if params are invalid" do
-      post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :bitbucket, :short_name => '$50') }
+      post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :github, :short_name => '$50') }
       expect(response).to have_http_status :unprocessable_entity
 
-      post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :bitbucket, :short_name => '503%') }
+      post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :github, :short_name => '503%') }
       expect(response).to have_http_status :unprocessable_entity
 
-      post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :bitbucket, :short_name => ' 55 ', :name => '   ') }
+      post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :github, :short_name => ' 55 ', :name => '   ') }
       expect(response).to have_http_status :unprocessable_entity
     end
   end
@@ -106,14 +106,14 @@ RSpec.describe PluginsController, type: :controller do
   describe "POST #plugin unauthorized (banned user)" do
     login_as FactoryGirl.create(:user, :banned)
     it "creates a new Plugin (gets Unauthorized error)" do
-      post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :bitbucket) }
+      post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :github) }
       expect(response).to have_http_status :unauthorized
     end
   end
 
   describe "POST #plugin unauthorized (without login)" do
     it "creates a new Plugin (gets Unauthorized error)" do
-      post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :bitbucket) }
+      post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :github) }
       expect(response).to have_http_status :unauthorized
     end
   end
@@ -122,7 +122,7 @@ RSpec.describe PluginsController, type: :controller do
   describe "PUT #plugin" do
     user = login_as FactoryGirl.create(:user)
     it "updates correctly" do
-      post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :bitbucket, :repo_name => "the-repo-namE  ") }
+      post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :github, :repo_name => "the-repo-namE  ") }
       plugin_id = JSON.parse(response.body)["id"]
       new_plugin = { :repo_type => :github, :name => "updated   name", :short_name => "  hehehe" }
 
@@ -137,7 +137,7 @@ RSpec.describe PluginsController, type: :controller do
 
     it "doesn't update user_id (plugins can't be transferred from one user to another)" do
 
-      post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :bitbucket, :repo_name => 'xxxxxqqwweert') }
+      post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :github, :repo_name => 'xxxxxqqwweert') }
 
       plugin_id = JSON.parse(response.body)["id"]
       plugin_user_id = JSON.parse(response.body)["user_id"]
@@ -160,7 +160,7 @@ RSpec.describe PluginsController, type: :controller do
     end
 
     it "can't be updated if it's not a plugin owned by the logged in user" do
-      plugin = FactoryGirl.create :plugin, :bitbucket
+      plugin = FactoryGirl.create :plugin, :github
       put :update, params: { id: plugin.id, plugin: { repo_name: 'new-repo-name-software' } }
       expect(response).to have_http_status :unauthorized
     end
@@ -170,7 +170,7 @@ RSpec.describe PluginsController, type: :controller do
   describe "DELETE #plugin" do
     user = login_as FactoryGirl.create(:user)
     it "destroys correctly" do
-      post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :bitbucket, :repo_name => "the-repo-namE  ") }
+      post :create, params: { plugin: FactoryGirl.attributes_for(:plugin, :github, :repo_name => "the-repo-namE  ") }
       plugin_id = JSON.parse(response.body)["id"]
       expect {
         delete :destroy, params: { id: plugin_id }
@@ -179,13 +179,13 @@ RSpec.describe PluginsController, type: :controller do
     end
 
     it "can't delete another user's plugin" do
-      plugin = FactoryGirl.create(:plugin, :bitbucket)
+      plugin = FactoryGirl.create(:plugin, :github)
       delete :destroy, params: { id: plugin.id }
       expect(response).to have_http_status :unauthorized
     end
 
     it "can't be updated if it's not a plugin owned by the logged in user" do
-      plugin = FactoryGirl.create :plugin, :bitbucket
+      plugin = FactoryGirl.create :plugin, :github
       put :update, params: { id: plugin.id, plugin: { repo_name: 'new-repo-name-software' } }
       expect(response).to have_http_status :unauthorized
     end

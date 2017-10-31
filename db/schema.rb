@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170909155401) do
+ActiveRecord::Schema.define(version: 20170909151313) do
 
   create_table "links", force: :cascade do |t|
     t.string "url", null: false
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20170909155401) do
 
   create_table "plugins", force: :cascade do |t|
     t.string "name", null: false
+    t.string "short_name", null: false
     t.integer "repo_type", default: 0, null: false
     t.string "repo_user", null: false
     t.string "repo_name", null: false
@@ -30,7 +31,8 @@ ActiveRecord::Schema.define(version: 20170909155401) do
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "short_name"
+    t.index ["name"], name: "index_plugins_on_name"
+    t.index ["short_name"], name: "index_plugins_on_short_name"
     t.index ["user_id"], name: "index_plugins_on_user_id"
   end
 
@@ -45,6 +47,8 @@ ActiveRecord::Schema.define(version: 20170909155401) do
     t.string "short_name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_tags_on_name"
+    t.index ["short_name"], name: "index_tags_on_short_name"
   end
 
   create_table "users", force: :cascade do |t|

@@ -3,7 +3,7 @@ require 'rails_helper'
 describe PluginPolicy do
   subject { PluginPolicy.new(user, plugin) }
 
-  let(:plugin) { plugin = FactoryGirl.create(:plugin, :bitbucket) }
+  let(:plugin) { plugin = FactoryGirl.create(:plugin, :github) }
 
   context 'being a visitor' do
     let(:user) { nil }

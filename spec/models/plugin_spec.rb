@@ -1,15 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe Plugin, type: :model do
-  it "is a correct plugin using Bitbucket" do
+
+  it "is a correct plugin using Github" do
     plugin = FactoryGirl.create(:plugin, :github)
     expect(plugin).to be_valid
-  end
-
-  it "is a correct plugin using Bitbucket" do
-    plugin = FactoryGirl.create(:plugin, :bitbucket)
-    expect(plugin).to be_valid
-    expect(plugin.repo_type.to_sym).to eq :bitbucket
+    expect(plugin.repo_type.to_sym).to eq :github
   end
 
   it "has a unique short name" do
