@@ -27,15 +27,6 @@ RSpec.describe TagsController, type: :controller do
   end
 
   describe "GET #search" do
-    it "returns empty" do
-      get :search, params: { }
-      expect(response).to be_success
-      expect(JSON.parse response.body).to eq []
-
-      get :search, params: { limit: 45 }
-      expect(response).to be_success
-      expect(JSON.parse response.body).to eq []
-    end
 
     it "returns search results" do
 
@@ -46,7 +37,7 @@ RSpec.describe TagsController, type: :controller do
       FactoryGirl.create(:tag, short_name: "helllll")
       FactoryGirl.create(:tag, short_name: "helloooooo")
 
-      get :search, params: { q: "he" }
+      get :index, params: { q: "he" }
       expect(response).to be_success
       parsed = JSON.parse response.body
       expect(parsed.length).to eq 3
@@ -54,7 +45,7 @@ RSpec.describe TagsController, type: :controller do
       expect(parsed[1]["short_name"]).to eq "hellooo"
       expect(parsed[2]["short_name"]).to eq "hell"
 
-      get :search, params: { q: "he", limit: 15 }
+      get :index, params: { q: "he", limit: 15 }
       expect(response).to be_success
       parsed = JSON.parse response.body
       expect(parsed.length).to eq 5
@@ -64,7 +55,7 @@ RSpec.describe TagsController, type: :controller do
       expect(parsed[3]["short_name"]).to eq "helllll"
       expect(parsed[4]["short_name"]).to eq "helloooooo"
 
-      get :search, params: { q: "he" }
+      get :index, params: { q: "he" }
       expect(response).to be_success
       parsed = JSON.parse response.body
       expect(parsed.length).to eq 3
@@ -72,7 +63,7 @@ RSpec.describe TagsController, type: :controller do
       expect(parsed[1]["short_name"]).to eq "hellooo"
       expect(parsed[2]["short_name"]).to eq "hell"
 
-      get :search, params: { q: "Hello", limit: 15 }
+      get :index, params: { q: "Hello", limit: 15 }
       expect(response).to be_success
       parsed = JSON.parse response.body
       expect(parsed.length).to eq 3
@@ -80,14 +71,14 @@ RSpec.describe TagsController, type: :controller do
       expect(parsed[1]["short_name"]).to eq "hellooo"
       expect(parsed[2]["short_name"]).to eq "helloooooo"
 
-      get :search, params: { q: "Hello", limit: 2 }
+      get :index, params: { q: "Hello", limit: 2 }
       expect(response).to be_success
       parsed = JSON.parse response.body
       expect(parsed.length).to eq 2
       expect(parsed[0]["short_name"]).to eq "hello"
       expect(parsed[1]["short_name"]).to eq "hellooo"
 
-      get :search, params: { q: "A", limit: 2 }
+      get :index, params: { q: "A", limit: 2 }
       expect(response).to be_success
       parsed = JSON.parse response.body
       expect(parsed.length).to eq 1

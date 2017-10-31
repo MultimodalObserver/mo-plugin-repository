@@ -21,6 +21,71 @@ RSpec.describe PluginsController, type: :controller do
     end
   end
 
+  describe "GET #search" do
+
+    it "returns search results" do
+
+      FactoryGirl.create(:plugin, name: "xhello")
+      FactoryGirl.create(:plugin, name: "hello")
+      FactoryGirl.create(:plugin, name: "hellooo")
+      FactoryGirl.create(:plugin, name: "hell")
+      FactoryGirl.create(:plugin, name: "helllll")
+      FactoryGirl.create(:plugin, name: "helloooooo")
+
+      get :index, params: { q: "he" }
+      expect(response).to be_success
+      parsed = JSON.parse response.body
+      expect(parsed.length).to eq 3
+      expect(parsed[0]["name"]).to eq "hello"
+      expect(parsed[1]["name"]).to eq "hellooo"
+      expect(parsed[2]["name"]).to eq "hell"
+
+      get :index, params: { q: "he", limit: 15 }
+      expect(response).to be_success
+      parsed = JSON.parse response.body
+      expect(parsed.length).to eq 5
+      expect(parsed[0]["name"]).to eq "hello"
+      expect(parsed[1]["name"]).to eq "hellooo"
+      expect(parsed[2]["name"]).to eq "hell"
+      expect(parsed[3]["name"]).to eq "helllll"
+      expect(parsed[4]["name"]).to eq "helloooooo"
+
+      get :index, params: { q: "he" }
+      expect(response).to be_success
+      parsed = JSON.parse response.body
+      expect(parsed.length).to eq 3
+      expect(parsed[0]["name"]).to eq "hello"
+      expect(parsed[1]["name"]).to eq "hellooo"
+      expect(parsed[2]["name"]).to eq "hell"
+
+      get :index, params: { q: "Hello", limit: 15 }
+      expect(response).to be_success
+      parsed = JSON.parse response.body
+      expect(parsed.length).to eq 3
+      expect(parsed[0]["name"]).to eq "hello"
+      expect(parsed[1]["name"]).to eq "hellooo"
+      expect(parsed[2]["name"]).to eq "helloooooo"
+
+      get :index, params: { q: "Hello", limit: 2 }
+      expect(response).to be_success
+      parsed = JSON.parse response.body
+      expect(parsed.length).to eq 2
+      expect(parsed[0]["name"]).to eq "hello"
+      expect(parsed[1]["name"]).to eq "hellooo"
+
+      get :index, params: { q: "X", limit: 2 }
+      expect(response).to be_success
+      parsed = JSON.parse response.body
+      expect(parsed.length).to eq 1
+      expect(parsed[0]["name"]).to eq "xhello"
+
+      get :index, params: { q: "bbbb", limit: 2 }
+      expect(response).to be_success
+      parsed = JSON.parse response.body
+      expect(parsed.length).to eq 0
+    end
+  end
+
 
   describe "GET #filter_by_tag" do
 

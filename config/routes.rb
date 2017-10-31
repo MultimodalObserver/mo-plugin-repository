@@ -12,7 +12,6 @@ Rails.application.routes.draw do
   scope :tags do
     get '/:tag_name', controller: :tags, action: :show
     get '/:tag_name/plugins', controller: :plugins, action: :filter_by_tag
-    get '/search', controller: :tags, action: :search
   end
 
   namespace :users do

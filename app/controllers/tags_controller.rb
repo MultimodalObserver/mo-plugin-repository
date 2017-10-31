@@ -3,32 +3,18 @@ class TagsController < ApplicationController
   before_action :set_tag, only: [:update, :destroy]
   before_action :authenticate_user!, only: [:create, :update, :destroy]
 
+  include Search
 
   # GET /tags
   def index
-    tags = Tag.all
-    render json: tags, :except => [:created_at, :updated_at]
-  end
 
-  # GET /search?q=qwerty&limit=2
-  def search
-
-    limit = 3
-
-    if(params.has_key?(:limit))
-      limit = params[:limit].to_i
-    end
-
-    limit = 10 if limit > 10
-
-    if(params.has_key?(:q))
-      results = Tag.limit(limit).where('short_name LIKE ?', "#{params[:q]}%")
-      render json: results, status: :ok
+    if params.has_key? :q
+      get_search_results(params: params, model: Tag, attribute: "short_name")
       return
     end
 
-    render json: [], status: :ok
-
+    tags = Tag.all
+    render json: tags, :except => [:created_at, :updated_at]
   end
 
 

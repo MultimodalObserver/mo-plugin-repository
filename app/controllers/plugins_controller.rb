@@ -3,7 +3,15 @@ class PluginsController < ApplicationController
   before_action :authenticate_user!, only: [:create, :update, :destroy]
   before_action :set_plugin, only: [:update, :destroy]
 
+  include Search
+
   def index
+
+    if params.has_key? :q
+      get_search_results(params: params, model: Plugin, attribute: "name")
+      return
+    end
+
     plugins = Plugin.includes(:tags).order("id DESC").paginate(:page => params[:page], :per_page => 10)
     render_format_include_everything plugins
   end
