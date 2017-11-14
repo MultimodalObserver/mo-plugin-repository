@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   get '/', to: 'home#index'
 
-  resources :users, only: [:index, :show]
+
 
   resources :tags, except: [:show]
 
@@ -20,12 +20,16 @@ Rails.application.routes.draw do
     put '/change_role', action: :change_role
   end
 
+  resources :users, only: [:index, :show]
+
   namespace :plugins do
     get '/', action: :index
     get '/:plugin_name', action: :show
     post '/', action: :create
     put '/:id', action: :update
     delete '/:id', action: :destroy
+    delete '/:id/tags/:tag_id', action: :remove_tag
+    post '/:id/tags', action: :add_tag
   end
 
 

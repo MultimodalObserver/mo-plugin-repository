@@ -18,6 +18,7 @@ c7 = Tag.create! :id => 7, :name => 'Video', :short_name => 'video'
 c8 = Tag.create! :id => 8, :name => 'Facial expressions', :short_name => 'facial-expressions'
 c9 = Tag.create! :id => 9, :name => 'Eye movement', :short_name => 'eye-movement'
 c10 = Tag.create! :id => 10, :name => 'Keyboard', :short_name => 'keYBOArd'
+c11 = Tag.create! :id => 11, :name => 'PluginTag', :short_name => 'plugin-tag'
 
 
 lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
@@ -27,7 +28,7 @@ html = "<b>Description with HTML</b><script>alert('HACKED')</script>"
 multiline = "        texto multilinea\n\n\n\n\n\n\ntexto multilinea\n\ntexto multilinea               "
 
 
-Plugin.create! :id => 1, :name => "Plugin name 1", :short_name => 'pluGin-1', :description => lorem, :user_id => 1, :repo_type => :github, :repo_user => "felovilches     ", :repo_name => "   mo-plugin-repository"
+Plugin.create! :id => 1, :name => "Plugin name 1", :short_name => 'pluGin-1', :description => lorem, :user_id => 1, :repo_type => :github, :repo_user => "atom     ", :repo_name => "   atom"
 Plugin.create! :id => 2, :tags => [ c1, c2, c3 ], :name => "Plugin name 2", :short_name => 'PLUGIN-2', :description => short, :user_id => 1, :repo_type => :github, :repo_user => "   felovilches   ", :repo_name => "mo-plugin-repository   ", :home_page => "https://www.facebook.com/felo.vilches"
 Plugin.create! :id => 3, :tags => [ c4, c6 ], :name => "Plugin name 3 (Github)", :short_name => 'plugin-3', :description => chinese, :user_id => 1, :repo_type => :github, :repo_user => " github_user  ", :repo_name => "mo-plugin-repository", :home_page => "https://www.facebook.com/felo.vilches"
 Plugin.create! :id => 4, :tags => [ c7, c9 ], :name => "Plugin name 4", :short_name => 'plugin-4', :description => html, :user_id => 2, :repo_type => :github, :repo_user => "  shouldBEALLloWCase  ", :repo_name => "mo-plugin-repository", :home_page => "https://www.facebook.com/felo.vilches"

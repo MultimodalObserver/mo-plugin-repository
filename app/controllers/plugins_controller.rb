@@ -1,7 +1,7 @@
 class PluginsController < ApplicationController
 
   before_action :authenticate_user!, only: [:create, :update, :destroy]
-  before_action :set_plugin, only: [:update, :destroy]
+  before_action :set_plugin, only: [:update, :remove_tag, :add_tag, :destroy]
 
   include Search
 
@@ -45,6 +45,36 @@ class PluginsController < ApplicationController
   end
 
 
+  def remove_tag
+    authorize @plugin
+    tag = Tag.find(params[:tag_id])
+    if @plugin.tags.delete(tag)
+      render json: {}, status: :ok
+    else
+      render json: {}, status: :bad_request
+    end
+  end
+
+  def add_tag
+    authorize @plugin
+
+    puts "PARAMETRO PASADO:"
+    puts params[:tag_name]
+    tag = Tag.find_by(short_name: params[:tag_name])
+
+    if tag.nil?
+      tag = Tag.new
+      tag.name = params[:tag_name]
+      tag.short_name = params[:tag_name]
+      tag.save!
+    end
+
+    @plugin.tags << tag
+    render json: tag.as_json, status: :ok
+
+  end
+
+
   def update
 
     authorize @plugin
@@ -81,7 +111,7 @@ class PluginsController < ApplicationController
   end
 
   def plugin_params
-    params.fetch(:plugin).permit(:name, :short_name, :repo_user, :repo_name, :repo_type)
+    params.fetch(:plugin).permit(:name, :short_name, :repo_user, :repo_name, :repo_type, :description)
   end
 
 end

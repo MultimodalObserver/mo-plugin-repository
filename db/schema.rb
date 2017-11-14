@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(version: 20170909151313) do
   create_table "plugins_tags", id: false, force: :cascade do |t|
     t.integer "plugin_id", null: false
     t.integer "tag_id", null: false
-    t.index ["plugin_id", "tag_id"], name: "index_plugins_tags_on_plugin_id_and_tag_id"
+    t.index ["plugin_id", "tag_id"], name: "index_plugins_tags_on_plugin_id_and_tag_id", unique: true
   end
 
   create_table "tags", force: :cascade do |t|

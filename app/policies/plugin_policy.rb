@@ -24,6 +24,14 @@ class PluginPolicy < ApplicationPolicy
     return true
   end
 
+  def add_tag?
+    update?
+  end
+
+  def remove_tag?
+    update?
+  end
+
   def destroy?
     update?
   end

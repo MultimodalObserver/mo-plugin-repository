@@ -21,6 +21,28 @@ RSpec.describe PluginsController, type: :controller do
     end
   end
 
+  describe "POST #add_tag" do
+    user = login_as FactoryGirl.create(:user)
+
+    it "doesn't add duplicate associations" do
+
+      tag = FactoryGirl.create(:tag)
+      plugin = FactoryGirl.create(:plugin, user: user)
+
+      post :add_tag, params: { id: plugin.id, tag_name: "abcdef" }
+
+      expect{
+        post :add_tag, params: { id: plugin.id, tag_name: "abcdef" }
+      }.to raise_error ActiveRecord::RecordNotUnique
+
+      expect{
+        post :add_tag, params: { id: plugin.id, tag_name: "  abcdef" }
+      }.to raise_error ActiveRecord::RecordInvalid
+
+
+    end
+  end
+
   describe "GET #search" do
 
     it "returns search results" do
