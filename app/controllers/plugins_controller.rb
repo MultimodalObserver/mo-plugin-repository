@@ -7,9 +7,15 @@ class PluginsController < ApplicationController
 
   def index
 
-    if params.has_key? :q
-      get_search_results(params: params, model: Plugin, attribute: "name")
-      return
+    if params.has_key?(:q) && params[:q].length > 0
+
+      if !params.has_key?(:include_tags_search)
+        get_search_results(params: params, model: Plugin, attribute: "name")
+        return
+      else
+        get_mixed_search_results(params[:q])
+        return
+      end
     end
 
     plugins = Plugin.includes(:tags).order("id DESC").paginate(:page => params[:page], :per_page => 10)
@@ -96,6 +102,47 @@ class PluginsController < ApplicationController
   end
 
   private
+
+  # This method must render search results by searching plugins
+  # and plugins that belong to tags that are also searched.
+  # In other words, it renders an array of plugins that come from
+  # a mixed search (plugins that belong to the Plugin table and
+  # plugins that belong to tags).
+  #
+  # This method's behavior could be done in other ways, but always keep in mind
+  # that the purpose of this method is to simply search by a single query. It
+  # could be implemented using full-text search, etc.
+  #
+  # The most basic implementation is to find plugins
+  # by name (name%wildcard%) and to find tags also using a wildcard,
+  # and then get some plugins that belong to that tag.
+  def get_mixed_search_results(query)
+
+    page = params[:page].to_i
+
+    plugins = Plugin
+    .where("name LIKE ?", "#{query}%")
+    .paginate(:page => page, :per_page => 10)
+    .order('id DESC')
+
+    plugins = [] if plugins.nil?
+
+    tag = Tag.where("short_name LIKE ?", "#{query}%").first
+
+    if tag.nil?
+      plugins2 = []
+    else
+      plugins2 = tag.plugins[(page-1)*10..(page * 10)-1]
+      plugins2 = [] if plugins2.nil?
+    end
+
+    result = plugins | plugins2
+
+    result.sort_by! { |p| -p.id }
+
+    render json: result, status: :ok
+
+  end
 
   def render_format_include_everything(plugin)
     render json: plugin.to_json(
