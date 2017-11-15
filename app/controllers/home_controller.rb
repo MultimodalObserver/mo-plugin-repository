@@ -3,7 +3,7 @@ class HomeController < ApplicationController
 
     render json: {
       :mo_plugin_repository => true,
-      :api_version => 1
+      :api_version => 1.1
     }
 
   end
