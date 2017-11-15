@@ -21,6 +21,7 @@ RSpec.describe TagsController, type: :controller do
 
   describe "GET #show" do
     it "returns a success response" do
+      FactoryGirl.create(:tag, :short_name => "Short-name1 ")
       get :show, params: { :tag_name => "short-name1" }
       expect(response).to be_success
     end
