@@ -28,7 +28,7 @@ class UsersController < ApplicationController
   end
 
   def my_plugins
-    plugins = Plugin.joins(:tags).where(user: current_user)
+    plugins = Plugin.includes(:tags).where(user_id: current_user.id)
     render json: plugins.to_json({ :include => :tags }), status: :ok
   end
 

@@ -89,7 +89,7 @@ class PluginsController < ApplicationController
     p.delete :user
 
     if @plugin.update(p)
-      render json: @plugin
+      render json: @plugin.to_json(:include => { :tags => {:only => [:id, :short_name]}})
     else
       render json: @plugin.errors, status: :unprocessable_entity
     end

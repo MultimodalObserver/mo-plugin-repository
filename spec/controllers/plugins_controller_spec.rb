@@ -29,7 +29,9 @@ RSpec.describe PluginsController, type: :controller do
       tag = FactoryGirl.create(:tag)
       plugin = FactoryGirl.create(:plugin, user: user)
 
-      post :add_tag, params: { id: plugin.id, tag_name: "abcdef" }
+      expect{
+        post :add_tag, params: { id: plugin.id, tag_name: "abcdef" }
+      }.to change(Plugin, :count).by 0      
 
       expect{
         post :add_tag, params: { id: plugin.id, tag_name: "abcdef" }
