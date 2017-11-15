@@ -58,8 +58,6 @@ class PluginsController < ApplicationController
   def add_tag
     authorize @plugin
 
-    puts "PARAMETRO PASADO:"
-    puts params[:tag_name]
     tag = Tag.find_by(short_name: params[:tag_name])
 
     if tag.nil?

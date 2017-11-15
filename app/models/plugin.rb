@@ -11,7 +11,7 @@ class Plugin < ActiveRecord::Base
   auto_strip_attributes :description, :squish => true
 
   validates :name, presence: true
-  validates :short_name, presence: true, uniqueness: true
+  validates :short_name, presence: true, uniqueness: { message: "Slug has already been taken, please choose another one." }
   validates :short_name, format: { with: /\A[a-z0-9-]+\z/, message: "Only a-z A-Z and dash." }
 
   #enum repo_type: [ :github, :bitbucket ]

@@ -16,6 +16,7 @@ Rails.application.routes.draw do
 
   namespace :users do
     get '/me', action: :me
+    get '/my_plugins', action: :my_plugins
     put '/change_status', action: :change_status
     put '/change_role', action: :change_role
   end

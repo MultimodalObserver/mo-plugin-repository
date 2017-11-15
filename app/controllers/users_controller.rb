@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
   before_action :set_user, only: [:show, :update, :destroy, :change_status, :change_role]
-  before_action :authenticate_user!, only: [:me]
+  before_action :authenticate_user!, only: [:me, :my_plugins]
 
   def index
     users = User.all
@@ -25,6 +25,11 @@ class UsersController < ApplicationController
 
   def me
     render json: current_user
+  end
+
+  def my_plugins
+    plugins = Plugin.joins(:tags).where(user: current_user)
+    render json: plugins.to_json({ :include => :tags }), status: :ok
   end
 
   def change_status
