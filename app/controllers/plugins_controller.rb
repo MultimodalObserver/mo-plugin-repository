@@ -121,13 +121,13 @@ class PluginsController < ApplicationController
     page = params[:page].to_i
 
     plugins = Plugin
-    .where("name LIKE ?", "#{query}%")
+    .where("lower(name) LIKE lower(?)", "#{query}%")
     .paginate(:page => page, :per_page => 10)
     .order('id DESC')
 
     plugins = [] if plugins.nil?
 
-    tag = Tag.where("short_name LIKE ?", "#{query}%").first
+    tag = Tag.where("lower(short_name) LIKE lower(?)", "#{query}%").first
 
     if tag.nil?
       plugins2 = []

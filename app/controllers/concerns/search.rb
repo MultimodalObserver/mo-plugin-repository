@@ -13,7 +13,7 @@ module Search
     limit = 10 if limit > 10
 
     if(params.has_key?(:q) && params[:q].length > 0)
-      results = model.limit(limit).where("#{attribute} LIKE ?", "#{params[:q]}%")
+      results = model.limit(limit).where("lower(#{attribute}) LIKE lower(?)", "#{params[:q]}%")
       render json: results, status: :ok
       return
     end
