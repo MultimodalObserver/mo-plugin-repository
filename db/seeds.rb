@@ -1,10 +1,10 @@
-User.create! :email => 'Aa@gmail.com', :password => '12345678', :password_confirmation => '12345678'
-User.create! :email => 'Bb@gmail.com', :password => '12345678', :password_confirmation => '12345678'
-User.create! :email => 'Cc@gmail.com', :password => '12345678', :password_confirmation => '12345678'
-User.create! :email => 'dD@gmail.com', :password => '12345678', :password_confirmation => '12345678'
-User.create! :email => 'EE@gmail.com', :password => '12345678', :password_confirmation => '12345678'
-User.create! :email => 'ff@gmail.com', :password => '12345678', :password_confirmation => '12345678'
-User.create! :email => 'GG@gmail.Com', :password => '12345678', :password_confirmation => '12345678'
+User.create! :nickname => "aa1", :email => 'Aa@gmail.com', :password => '12345678', :password_confirmation => '12345678'
+User.create! :nickname => "bb-2",:email => 'Bb@gmail.com', :password => '12345678', :password_confirmation => '12345678'
+User.create! :nickname => "cc33",:email => 'Cc@gmail.com', :password => '12345678', :password_confirmation => '12345678'
+User.create! :nickname => "dd",:email => 'dD@gmail.com', :password => '12345678', :password_confirmation => '12345678'
+User.create! :nickname => "eeee",:email => 'EE@gmail.com', :password => '12345678', :password_confirmation => '12345678'
+User.create! :nickname => "ffff",:email => 'ff@gmail.com', :password => '12345678', :password_confirmation => '12345678'
+User.create! :nickname => "gg34",:email => 'GG@gmail.Com', :password => '12345678', :password_confirmation => '12345678'
 
 
 

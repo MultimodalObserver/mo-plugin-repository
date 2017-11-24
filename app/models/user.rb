@@ -14,6 +14,22 @@ class User < ActiveRecord::Base
 
   enum role: [ :normal_user, :moderator, :admin ]
 
+  validates :nickname, presence: true, uniqueness: true
+  validates :nickname, format: { with: /\A[a-z0-9-]+\z/, message: "Only a-z, numbers and dash are allowed." }
+  auto_strip_attributes :nickname, :squish => true
+
+  validates :nickname, length: {
+    maximum: 25,
+    minimum: 2,
+    too_long: "is too long, %{count} characters is the maximum allowed",
+    too_short: "is too short, %{count} characters is the minimum allowed" }
+
+  before_validation :downcase_fields
+
+  def downcase_fields
+    self.nickname.downcase! if !self.nickname.nil?
+  end
+
   # Status
 
   def active?

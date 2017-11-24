@@ -18,7 +18,7 @@ class PluginsController < ApplicationController
       end
     end
 
-    plugins = Plugin.includes(:tags).order("id DESC").paginate(:page => params[:page], :per_page => 10)
+    plugins = Plugin.includes([:tags, :user]).order("id DESC").paginate(:page => params[:page], :per_page => 10)
     render_format_include_everything plugins
   end
 
@@ -32,7 +32,7 @@ class PluginsController < ApplicationController
 
 
   def show
-    plugin = Plugin.includes(:tags).limit(1).find_by(:short_name => params[:plugin_name].downcase)
+    plugin = Plugin.includes([:tags, :user]).limit(1).find_by(:short_name => params[:plugin_name].downcase)
     raise ActiveRecord::RecordNotFound if plugin.nil?
     render_format_include_everything plugin
   end
@@ -140,15 +140,15 @@ class PluginsController < ApplicationController
 
     result.sort_by! { |p| -p.id }
 
-    render json: result, status: :ok
+    render_format_include_everything result
 
   end
 
   def render_format_include_everything(plugin)
     render json: plugin.to_json(
     :except => [:created_at, :updated_at],
-    :include => { :tags => {:only => [:id, :short_name]}}
-    )
+    :include => { :user => {:only => [:nickname]}, :tags => {:only => [:id, :short_name]} }
+  ), status: :ok
   end
 
   def set_plugin
