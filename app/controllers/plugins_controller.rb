@@ -18,7 +18,12 @@ class PluginsController < ApplicationController
       end
     end
 
-    plugins = Plugin.includes([:tags, :user]).order("id DESC").paginate(:page => params[:page], :per_page => 10)
+    plugins = Plugin
+    .includes([:tags, :user])
+    .where({ status: :confirmed })
+    .order("id DESC")
+    .paginate(:page => params[:page], :per_page => 10)
+
     render_format_include_everything plugins
   end
 
@@ -26,13 +31,28 @@ class PluginsController < ApplicationController
   def filter_by_tag
     tag = Tag.select(:id).limit(1).find_by(:short_name => params[:tag_name].downcase)
     raise ActiveRecord::RecordNotFound if tag.nil?
-    plugins = Plugin.joins(:tags).where(tags: { id: tag.id }).order("id DESC").paginate(:page => params[:page], :per_page => 10)
+    plugins = Plugin
+    .where({ status: :confirmed })
+    .joins(:tags)
+    .where(tags: { id: tag.id })
+    .order("id DESC")
+    .paginate(:page => params[:page], :per_page => 10)
     render_format_include_everything plugins
   end
 
 
   def show
-    plugin = Plugin.includes([:tags, :user]).limit(1).find_by(:short_name => params[:plugin_name].downcase)
+    plugin = Plugin
+    .includes([:tags, :user])
+    .limit(1)
+    .find_by(:short_name => params[:plugin_name].downcase)
+
+    if !plugin.nil? && plugin.status != "confirmed"
+      if !user_signed_in? || plugin.user_id != current_user.id
+        plugin = nil
+      end
+    end
+
     raise ActiveRecord::RecordNotFound if plugin.nil?
     render_format_include_everything plugin
   end
@@ -136,6 +156,7 @@ class PluginsController < ApplicationController
     page = params[:page].to_i
 
     plugins = Plugin
+    .where({ status: :confirmed })
     .where("lower(name) LIKE lower(?)", "#{query}%")
     .paginate(:page => page, :per_page => 10)
     .order('id DESC')

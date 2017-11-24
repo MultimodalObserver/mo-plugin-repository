@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20170909151313) do
   create_table "plugins", force: :cascade do |t|
     t.string "name", null: false
     t.string "short_name", null: false
-    t.integer "repo_type", default: 0, null: false
+    t.integer "repo_type", null: false
     t.string "repo_user", null: false
     t.string "repo_name", null: false
     t.integer "status", default: 0, null: false

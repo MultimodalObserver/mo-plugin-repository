@@ -38,7 +38,6 @@ class Plugin < ActiveRecord::Base
   end
 
 
-
   def self.split_repository_data(repository_url)
 
     simple_url = SimpleUrl.new repository_url, 'HTTPS'
