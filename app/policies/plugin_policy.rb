@@ -8,6 +8,16 @@ class PluginPolicy < ApplicationPolicy
     true
   end
 
+  def accept_plugin?
+    return false if user.nil?
+    return true if user.admin?
+    return false    
+  end
+
+  def reject_plugin?
+    accept_plugin?
+  end
+
   def create?
     return false if user.nil?
     return false if !user.active?

@@ -31,6 +31,9 @@ Rails.application.routes.draw do
     delete '/:id', action: :destroy
     delete '/:id/tags/:tag_id', action: :remove_tag
     post '/:id/tags', action: :add_tag
+
+    post '/:id/reject', action: :reject_plugin
+    post '/:id/accept', action: :accept_plugin
   end
 
 

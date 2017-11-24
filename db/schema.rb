@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 20170909151313) do
     t.integer "repo_type", default: 0, null: false
     t.string "repo_user", null: false
     t.string "repo_name", null: false
+    t.integer "status", default: 0, null: false
     t.string "home_page"
     t.string "description"
     t.integer "user_id", null: false

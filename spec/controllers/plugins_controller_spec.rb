@@ -31,7 +31,7 @@ RSpec.describe PluginsController, type: :controller do
 
       expect{
         post :add_tag, params: { id: plugin.id, tag_name: "abcdef" }
-      }.to change(Plugin, :count).by 0      
+      }.to change(Plugin, :count).by 0
 
       expect{
         post :add_tag, params: { id: plugin.id, tag_name: "abcdef" }
@@ -278,6 +278,30 @@ RSpec.describe PluginsController, type: :controller do
       put :update, params: { id: plugin.id, plugin: { repo_name: 'new-repo-name-software' } }
       expect(response).to have_http_status :unauthorized
     end
+  end
+
+
+  describe "POST #accept_plugin" do
+    login_as_admin
+
+    it "accepts plugin correctly" do
+      p = FactoryGirl.create(:plugin)
+      expect(p.status).to eq "pending"
+      post :accept_plugin, params: { id: p.id }
+      expect(response).to have_http_status :ok
+      p.reload
+      expect(p.status).to eq "confirmed"
+    end
+
+    it "accepts plugin correctly" do
+      p = FactoryGirl.create(:plugin)
+      expect(p.status).to eq "pending"
+      post :reject_plugin, params: { id: p.id }
+      expect(response).to have_http_status :ok
+      p.reload
+      expect(p.status).to eq "rejected"
+    end
+
   end
 
 

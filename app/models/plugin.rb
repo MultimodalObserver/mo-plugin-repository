@@ -26,6 +26,8 @@ class Plugin < ActiveRecord::Base
 
   before_validation :downcase_fields
 
+  enum status: [ :pending, :rejected, :confirmed ]
+
 
   def downcase_fields
     self.short_name.downcase! if !self.short_name.nil?

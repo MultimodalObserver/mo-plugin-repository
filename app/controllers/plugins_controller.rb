@@ -1,7 +1,7 @@
 class PluginsController < ApplicationController
 
-  before_action :authenticate_user!, only: [:create, :update, :destroy]
-  before_action :set_plugin, only: [:update, :remove_tag, :add_tag, :destroy]
+  before_action :authenticate_user!, only: [:create, :update, :destroy, :accept_plugin, :reject_plugin]
+  before_action :set_plugin, only: [:update, :remove_tag, :add_tag, :destroy, :accept_plugin, :reject_plugin]
 
   include Search
 
@@ -87,12 +87,27 @@ class PluginsController < ApplicationController
     p = plugin_params
     p.delete :user_id
     p.delete :user
+    p.delete :status
 
     if @plugin.update(p)
       render json: @plugin.to_json(:include => { :tags => {:only => [:id, :short_name]}})
     else
       render json: @plugin.errors, status: :unprocessable_entity
     end
+  end
+
+  def accept_plugin
+    authorize Plugin
+    @plugin.status = Plugin.statuses[:confirmed]
+    @plugin.save!
+    render json: {}, status: :ok
+  end
+
+  def reject_plugin
+    authorize Plugin
+    @plugin.status = Plugin.statuses[:rejected]
+    @plugin.save!
+    render json: {}, status: :ok
   end
 
 

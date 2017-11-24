@@ -23,6 +23,9 @@ describe PluginPolicy do
     it { is_expected.to permit_action(:create) }
     it { is_expected.to forbid_action(:update) }
     it { is_expected.to forbid_action(:destroy) }
+
+    it { is_expected.to forbid_action(:accept_plugin) }
+    it { is_expected.to forbid_action(:reject_plugin) }
   end
 
   context 'being a banned user' do
@@ -33,6 +36,16 @@ describe PluginPolicy do
     it { is_expected.to forbid_action(:create) }
     it { is_expected.to forbid_action(:update) }
     it { is_expected.to forbid_action(:destroy) }
+
+    it { is_expected.to forbid_action(:accept_plugin) }
+    it { is_expected.to forbid_action(:reject_plugin) }
+  end
+
+  context 'being an admin' do
+    let(:user) { FactoryGirl.create(:user, :admin) }
+
+    it { is_expected.to permit_action(:accept_plugin) }
+    it { is_expected.to permit_action(:reject_plugin) }
   end
 
   context 'being the plugin owner' do
@@ -43,6 +56,9 @@ describe PluginPolicy do
     it { is_expected.to permit_action(:create) }
     it { is_expected.to permit_action(:update) }
     it { is_expected.to permit_action(:destroy) }
+
+    it { is_expected.to forbid_action(:accept_plugin) }
+    it { is_expected.to forbid_action(:reject_plugin) }
   end
 
   context 'being the plugin owner (but banned)' do
@@ -58,6 +74,9 @@ describe PluginPolicy do
     it { is_expected.to forbid_action(:create) }
     it { is_expected.to forbid_action(:update) }
     it { is_expected.to forbid_action(:destroy) }
+
+    it { is_expected.to forbid_action(:accept_plugin) }
+    it { is_expected.to forbid_action(:reject_plugin) }
   end
 
 end
