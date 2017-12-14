@@ -4,6 +4,8 @@ FactoryGirl.define do
 
     sequence :short_name { |n| "short-name#{n}" }
 
+    status "confirmed"
+
     r = Plugin.split_repository_data "https://github.com/aaa/bbb"
     repo_type r[:repo_type]
     repo_user r[:repo_user]
