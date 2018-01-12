@@ -8,20 +8,20 @@ User.create! :nickname => "gg34",:email => 'GG@gmail.Com', :password => '1234567
 
 
 
-c1 = Tag.create! :name => 'Visualization', :short_name => 'visualization'
-c2 = Tag.create! :name => 'Misc', :short_name => 'misc'
-c3 = Tag.create! :name => 'Data capture', :short_name => 'data-capture'
-c4 = Tag.create! :name => 'GUI enhancement', :short_name => 'gui-enhancement'
-c5 = Tag.create! :name => 'Data analysis', :short_name => 'data-analysis'
-c6 = Tag.create! :name => 'Brain waves', :short_name => 'brain-waves'
-c7 = Tag.create! :name => 'Video', :short_name => 'video'
-c8 = Tag.create! :name => 'Facial expressions', :short_name => 'facial-expressions'
-c9 = Tag.create! :name => 'Eye movement', :short_name => 'eye-movement'
-c10 = Tag.create! :name => 'Keyboard', :short_name => 'keYBOArd'
-c11 = Tag.create! :name => 'Webcam', :short_name => 'webcam'
-c12 = Tag.create! :name => 'Eyetracker', :short_name => 'eye-tracker'
-c13 = Tag.create! :name => 'Mousetracker', :short_name => 'mouse-tracker'
-c14 = Tag.create! :name => 'Screencapture', :short_name => 'screen-capture'
+c1 = Tag.create! :short_name => 'visualization'
+c2 = Tag.create! :short_name => 'misc'
+c3 = Tag.create! :short_name => 'data-capture'
+c4 = Tag.create! :short_name => 'gui-enhancement'
+c5 = Tag.create! :short_name => 'data-analysis'
+c6 = Tag.create! :short_name => 'brain-waves'
+c7 = Tag.create! :short_name => 'video'
+c8 = Tag.create! :short_name => 'facial-expressions'
+c9 = Tag.create! :short_name => 'eye-movement'
+c10 = Tag.create! :short_name => 'keYBOArd'
+c11 = Tag.create! :short_name => 'webcam'
+c12 = Tag.create! :short_name => 'eye-tracker'
+c13 = Tag.create! :short_name => 'mouse-tracker'
+c14 = Tag.create! :short_name => 'screen-capture'
 
 
 lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."

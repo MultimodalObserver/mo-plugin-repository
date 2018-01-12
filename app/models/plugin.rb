@@ -11,8 +11,15 @@ class Plugin < ActiveRecord::Base
   auto_strip_attributes :description, :squish => true
 
   validates :name, presence: true
+  validates_length_of :name, :minimum => 1, :maximum => 75, :allow_blank => false
   validates :short_name, presence: true, uniqueness: { message: "Slug has already been taken, please choose another one." }
   validates :short_name, format: { with: /\A[a-z0-9-]+\z/, message: "Only a-z A-Z, numbers and dashes are allowed." }
+
+  validates_length_of :home_page, :maximum => 75, :allow_blank => true
+  validates_length_of :repo_name, :maximum => 75, :allow_blank => false
+  validates_length_of :repo_user, :maximum => 75, :allow_blank => false
+  validates_length_of :short_name, :maximum => 75, :allow_blank => false
+  validates_length_of :description, :maximum => 1048576, :allow_blank => true
 
   #enum repo_type: [ :github, :bitbucket ]
   enum repo_type: [ :github ]

@@ -88,7 +88,6 @@ class PluginsController < ApplicationController
 
     if tag.nil?
       tag = Tag.new
-      tag.name = params[:tag_name]
       tag.short_name = params[:tag_name]
       tag.save!
     end

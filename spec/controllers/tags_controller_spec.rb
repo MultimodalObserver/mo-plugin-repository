@@ -145,9 +145,7 @@ RSpec.describe TagsController, type: :controller do
 
       it "updates the requested tag" do
         tag = FactoryGirl.create(:tag)
-        name = tag.name
         put :update, params: { id: tag.id, tag: { short_name: "test-test-test        "} }
-        expect(tag.name).to eq(name)
         tag.reload
         expect(tag.short_name).to eq("test-test-test")
       end

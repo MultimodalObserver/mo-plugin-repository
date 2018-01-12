@@ -1,10 +1,9 @@
 class Tag < ActiveRecord::Base
 
-  validates :name, presence: true
   validates :short_name, presence: true, uniqueness: true
   validates :short_name, format: { with: /\A[a-z0-9-]+\z/, message: "Only a-z and dash." }
+  validates_length_of :short_name, :maximum => 75, :allow_blank => false
 
-  auto_strip_attributes :name, :squish => true
   auto_strip_attributes :short_name, :squish => true
 
   has_and_belongs_to_many :plugins
