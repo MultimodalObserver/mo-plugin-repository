@@ -31,6 +31,8 @@ html = "<b>Description with HTML</b><script>alert('HACKED')</script>"
 multiline = "        texto multilinea\n\n\n\n\n\n\ntexto multilinea\n\ntexto multilinea               "
 
 
+Plugin.create! :status => Plugin.statuses[:confirmed], :name => "JNativeMouseCapture", :short_name => 'j-mouse-capture', :description => lorem, :user_id => 1, :repo_type => :github, :repo_user => "felovilches-extra", :repo_name => "jnativehook-mouse-capture"
+
 Plugin.create! :status => Plugin.statuses[:confirmed], :name => "Plugin name 1", :short_name => 'pluGin-1', :description => lorem, :user_id => 1, :repo_type => :github, :repo_user => "atom     ", :repo_name => "   atom"
 Plugin.create! :status => Plugin.statuses[:confirmed], :tags => [ c1, c2, c3 ], :name => "Plugin name 2", :short_name => 'PLUGIN-2', :description => short, :user_id => 1, :repo_type => :github, :repo_user => "   felovilches   ", :repo_name => "mo-plugin-repository   ", :home_page => "https://www.facebook.com/felo.vilches"
 Plugin.create! :status => Plugin.statuses[:pending], :tags => [ c4, c6 ], :name => "Plugin name 3 pending", :short_name => 'plugin-3', :description => chinese, :user_id => 1, :repo_type => :github, :repo_user => " github_user  ", :repo_name => "mo-plugin-repository", :home_page => "https://www.facebook.com/felo.vilches"
