@@ -9,7 +9,8 @@ class TagsController < ApplicationController
   def index
 
     if params.has_key? :q
-      get_search_results(params: params, model: Tag, attribute: "short_name")
+      tags = get_search_results(params: params, model: Tag, attribute: "short_name")
+      render json: tags, status: :ok
       return
     end
 

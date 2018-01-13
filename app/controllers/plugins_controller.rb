@@ -16,7 +16,11 @@ class PluginsController < ApplicationController
     if params.has_key?(:q) && params[:q].length > 0
 
       if !params.has_key?(:include_tags_search)
-        get_search_results(params: params, model: Plugin, attribute: "name")
+        query = get_search_results(params: params, model: Plugin, attribute: "name")
+
+        query = only_visible(query)
+
+        render json: query, status: :ok
         return
       else
         get_mixed_search_results(params[:q])
@@ -29,6 +33,8 @@ class PluginsController < ApplicationController
     .where({ status: :confirmed })
     .order("id DESC")
     .paginate(:page => params[:page], :per_page => 10)
+
+    plugins = only_visible(plugins)
 
     render_format_include_everything plugins
   end
@@ -57,6 +63,9 @@ class PluginsController < ApplicationController
     .where(tags: { id: tag.id })
     .order("id DESC")
     .paginate(:page => params[:page], :per_page => limit)
+
+    plugins = only_visible(plugins)
+
     render_format_include_everything plugins
   end
 
@@ -182,10 +191,11 @@ class PluginsController < ApplicationController
     page = params[:page].to_i
 
     plugins = Plugin
-    .where({ status: :confirmed })
     .where("lower(name) LIKE lower(?)", "#{query}%")
     .paginate(:page => page, :per_page => 10)
     .order('id DESC')
+
+    plugins = only_visible(plugins)
 
     plugins = [] if plugins.nil?
 
@@ -200,6 +210,10 @@ class PluginsController < ApplicationController
 
     result = plugins | plugins2
 
+    if current_user.nil? || !current_user.admin?
+      plugins2.delete_if { |x| x.status != :confirmed }
+    end
+
     result.sort_by! { |p| -p.id }
 
     render_format_include_everything result
@@ -211,6 +225,12 @@ class PluginsController < ApplicationController
     :except => [:created_at, :updated_at],
     :include => { :user => {:only => [:nickname]}, :tags => {:only => [:id, :short_name]} }
   ), status: :ok
+  end
+
+  def only_visible(query)
+    return query if query.nil?
+    return query if !current_user.nil? && current_user.admin?
+    return query.where(status: :confirmed)
   end
 
   def set_plugin

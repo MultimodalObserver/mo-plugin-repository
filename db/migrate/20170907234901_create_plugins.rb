@@ -8,7 +8,7 @@ class CreatePlugins < ActiveRecord::Migration[5.1]
       t.string :repo_user, :null => false
       t.string :repo_name, :null => false
 
-      t.integer :status, null: false, default: Plugin.statuses[:pending]
+      t.integer :status, null: false, default: Plugin.statuses[:pending], index: true
 
       t.string :home_page
       t.string :description
