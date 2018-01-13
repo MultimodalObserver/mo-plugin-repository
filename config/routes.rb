@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  mount_devise_token_auth_for 'User', at: 'auth'
+  mount_devise_token_auth_for 'User', at: 'auth', :controllers => { :registrations => "registrations" }
 
   get '/', to: 'home#index'
 
@@ -28,7 +28,6 @@ Rails.application.routes.draw do
     delete '/:id', action: :destroy
     delete '/:id/tags/:tag_id', action: :remove_tag
     post '/:id/tags', action: :add_tag
-
     post '/:id/reject', action: :reject_plugin
     post '/:id/accept', action: :accept_plugin
   end

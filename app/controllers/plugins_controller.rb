@@ -1,11 +1,17 @@
 class PluginsController < ApplicationController
 
+  include Recaptcha::Verify
+
   before_action :authenticate_user!, only: [:create, :update, :destroy, :accept_plugin, :reject_plugin]
   before_action :set_plugin, only: [:update, :remove_tag, :add_tag, :destroy, :accept_plugin, :reject_plugin]
 
   include Search
 
   def index
+
+    if params.has_key?(:latest)
+      return latest_plugins
+    end
 
     if params.has_key?(:q) && params[:q].length > 0
 
@@ -25,6 +31,11 @@ class PluginsController < ApplicationController
     .paginate(:page => params[:page], :per_page => 10)
 
     render_format_include_everything plugins
+  end
+
+  def latest_plugins
+    plugins = Plugin.where({ status: :confirmed }).limit(5).order("id DESC")
+    render json: plugins.to_json(:only => [:name, :short_name])
   end
 
 
@@ -59,11 +70,14 @@ class PluginsController < ApplicationController
 
   # POST /plugins
   def create
+
     authorize Plugin
+
     plugin = Plugin.new(plugin_params)
     plugin.user_id = current_user.id
 
-    if plugin_params.has_key?(:repo_type) && plugin.save
+
+    if plugin_params.has_key?(:repo_type) && verify_recaptcha(model: plugin) && plugin.save
       render json: plugin, status: :created
     else
       render json: plugin.errors, status: :unprocessable_entity

@@ -26,12 +26,13 @@ gem 'will_paginate', '~> 3.1.0'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors', :require => 'rack/cors'
-
+gem "recaptcha", require: "recaptcha/rails"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'simplecov', :require => false
   gem 'sqlite3'
+  gem 'pg'
   gem 'memory_test_fix'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'factory_girl_rails'

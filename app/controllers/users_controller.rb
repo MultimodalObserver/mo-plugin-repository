@@ -32,6 +32,7 @@ class UsersController < ApplicationController
     render json: plugins.to_json({ :include => :tags }), status: :ok
   end
 
+=begin
   def change_status
     authorize @user
     @user.status = params[:status]
@@ -45,7 +46,7 @@ class UsersController < ApplicationController
     @user.save
     render json: @user, status: :ok
   end
-
+=end
 private
   def set_user
     @user = User.find(params[:id])

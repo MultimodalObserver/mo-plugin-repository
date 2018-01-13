@@ -16,6 +16,7 @@ RSpec.describe UsersController, type: :controller do
     end
   end
 
+=begin
   describe "PUT #change_status (authorization only). Normal user changes someone's status" do
     login_as FactoryGirl.build(:user)
     it "returns unauthorized" do
@@ -130,7 +131,7 @@ RSpec.describe UsersController, type: :controller do
       expect(user.moderator?).to be true
     end
   end
-
+=end
 
 =begin
   describe "POST #create" do
