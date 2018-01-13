@@ -123,7 +123,8 @@ class PluginsController < ApplicationController
     p.delete :status
 
     if @plugin.update(p)
-      render json: @plugin.to_json(:include => { :tags => {:only => [:id, :short_name]}})
+      render_format_include_everything @plugin
+      #render json: @plugin.to_json(:include => { :tags => {:only => [:id, :short_name]}})
     else
       render json: @plugin.errors, status: :unprocessable_entity
     end
