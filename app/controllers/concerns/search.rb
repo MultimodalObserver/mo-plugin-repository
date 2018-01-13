@@ -13,7 +13,9 @@ module Search
     limit = 10 if limit > 10
 
     if(params.has_key?(:q) && params[:q].length > 0)
-      results = model.limit(limit).where("lower(#{attribute}) LIKE lower(?)", "#{params[:q]}%")
+      results = model
+      .paginate(:page => params[:page], :per_page => limit)
+      .where("lower(#{attribute}) LIKE lower(?)", "#{params[:q]}%")
       render json: results, status: :ok
       return
     end

@@ -41,13 +41,22 @@ class PluginsController < ApplicationController
 
   def filter_by_tag
     tag = Tag.select(:id).limit(1).find_by(:short_name => params[:tag_name].downcase)
+
+    limit = 3
+
+    if(params.has_key?(:limit))
+      limit = params[:limit].to_i
+    end
+
+    limit = 10 if limit > 10
+
     raise ActiveRecord::RecordNotFound if tag.nil?
     plugins = Plugin
     .where({ status: :confirmed })
     .joins(:tags)
     .where(tags: { id: tag.id })
     .order("id DESC")
-    .paginate(:page => params[:page], :per_page => 10)
+    .paginate(:page => params[:page], :per_page => limit)
     render_format_include_everything plugins
   end
 
@@ -59,7 +68,10 @@ class PluginsController < ApplicationController
     .find_by(:short_name => params[:plugin_name].downcase)
 
     if !plugin.nil? && plugin.status != "confirmed"
-      if !user_signed_in? || plugin.user_id != current_user.id
+
+      if current_user.admin?
+        # Don't nullify plugin
+      else !user_signed_in? || plugin.user_id != current_user.id
         plugin = nil
       end
     end
