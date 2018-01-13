@@ -5,7 +5,7 @@ User.create! :nickname => "dd",:email => 'dD@gmail.com', :password => '12345678'
 User.create! :nickname => "eeee",:email => 'EE@gmail.com', :password => '12345678', :password_confirmation => '12345678'
 User.create! :nickname => "ffff",:email => 'ff@gmail.com', :password => '12345678', :password_confirmation => '12345678'
 User.create! :nickname => "gg34",:email => 'GG@gmail.Com', :password => '12345678', :password_confirmation => '12345678'
-
+User.create! :nickname => "admin", :email => 'admin@gmail.com', :password => '12345678', :password_confirmation => '12345678', :role => User.roles[:admin]
 
 
 c1 = Tag.create! :short_name => 'visualization'

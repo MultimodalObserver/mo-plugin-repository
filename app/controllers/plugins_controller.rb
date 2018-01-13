@@ -3,6 +3,7 @@ class PluginsController < ApplicationController
   include Recaptcha::Verify
 
   before_action :authenticate_user!, only: [:create, :update, :destroy, :accept_plugin, :reject_plugin]
+
   before_action :set_plugin, only: [:update, :remove_tag, :add_tag, :destroy, :accept_plugin, :reject_plugin]
 
   include Search
@@ -30,7 +31,6 @@ class PluginsController < ApplicationController
 
     plugins = Plugin
     .includes([:tags, :user])
-    .where({ status: :confirmed })
     .order("id DESC")
     .paginate(:page => params[:page], :per_page => 10)
 
@@ -210,7 +210,7 @@ class PluginsController < ApplicationController
 
     result = plugins | plugins2
 
-    if current_user.nil? || !current_user.admin?
+    if !user_signed_in? || !current_user.admin?
       plugins2.delete_if { |x| x.status != :confirmed }
     end
 
@@ -229,7 +229,7 @@ class PluginsController < ApplicationController
 
   def only_visible(query)
     return query if query.nil?
-    return query if !current_user.nil? && current_user.admin?
+    return query if user_signed_in? && current_user.admin?
     return query.where(status: :confirmed)
   end
 
