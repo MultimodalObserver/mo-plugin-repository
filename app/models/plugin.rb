@@ -1,5 +1,9 @@
 class Plugin < ActiveRecord::Base
 
+  include PgSearch
+
+  pg_search_scope :search, :against => [:description, :name, :short_name, :repo_name, :repo_user]
+
   belongs_to :user
 
   auto_strip_attributes :name, :squish => true

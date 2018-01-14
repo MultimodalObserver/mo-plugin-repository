@@ -16,19 +16,15 @@ class PluginsController < ApplicationController
       return latest_plugins
     end
 
-    query = Plugin.none
+    query = Plugin
 
-    if params.has_key?(:q) && params[:q].length > 0
-      query = get_search_results(params: params, model: Plugin, attribute: "name")
-    else
-
-      query = Plugin
-      .paginate(:page => params[:page], :per_page => 10)
-
+    if(search_query.length > 0)
+      query = query.search(search_query)
     end
 
     query = query
     .where({ status: :confirmed })
+    .paginate(:page => params[:page], :per_page => LIMIT)
     .includes([:tags, :user])
     .order("id DESC")
 
@@ -41,21 +37,13 @@ class PluginsController < ApplicationController
   def filter_by_tag
     tag = Tag.select(:id).limit(1).find_by(:short_name => params[:tag_name].downcase)
 
-    limit = 3
-
-    if(params.has_key?(:limit))
-      limit = params[:limit].to_i
-    end
-
-    limit = 10 if limit > 10
-
     raise ActiveRecord::RecordNotFound if tag.nil?
     plugins = Plugin
     .where({ status: :confirmed })
     .joins(:tags)
     .where(tags: { id: tag.id })
     .order("id DESC")
-    .paginate(:page => params[:page], :per_page => limit)
+    .paginate(:page => params[:page], :per_page => LIMIT)
 
     render_format_include_everything plugins
   end

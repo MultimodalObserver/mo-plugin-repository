@@ -1,20 +1,19 @@
 module Search
   extend ActiveSupport::Concern
 
+  LIMIT = 10
+
+  def search_query
+    return "" if !params.has_key?(:q)
+    return params[:q]
+  end
+
 
   def get_search_results(params:, model:, attribute:)
 
-    limit = 3
-
-    if(params.has_key?(:limit))
-      limit = params[:limit].to_i
-    end
-
-    limit = 10 if limit > 10
-
-    if(params.has_key?(:q) && params[:q].length > 0)
+    if(search_query.length > 0)
       query = model
-      .paginate(:page => params[:page], :per_page => limit)
+      .paginate(:page => params[:page], :per_page => LIMIT)
       .where("lower(#{attribute}) LIKE lower(?)", "#{params[:q]}%")
       return query
     end
