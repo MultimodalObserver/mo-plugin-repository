@@ -4,9 +4,9 @@ class PluginsController < ApplicationController
 
   include Search
 
-  before_action :authenticate_user!, only: [:create, :update, :destroy, :accept_plugin, :reject_plugin]
+  before_action :authenticate_user!, only: [:create, :update, :destroy]
 
-  before_action :set_plugin, only: [:update, :remove_tag, :add_tag, :destroy, :accept_plugin, :reject_plugin]
+  before_action :set_plugin, only: [:update, :remove_tag, :add_tag, :destroy]
 
 
 
