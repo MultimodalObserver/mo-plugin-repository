@@ -2,13 +2,15 @@ class PluginsController < ApplicationController
 
   include Recaptcha::Verify
 
+  include Search
+
   before_action :authenticate_user!, only: [:create, :update, :destroy, :accept_plugin, :reject_plugin]
 
   before_action :set_plugin, only: [:update, :remove_tag, :add_tag, :destroy, :accept_plugin, :reject_plugin]
 
-  include Search
 
-  def index
+
+  def explore
 
     if params.has_key?(:latest)
       return latest_plugins
@@ -18,9 +20,7 @@ class PluginsController < ApplicationController
 
       if !params.has_key?(:include_tags_search)
         query = get_search_results(params: params, model: Plugin, attribute: "name")
-
-        query = only_visible(query)
-
+        query = query.where({ status: :confirmed })
         render json: query, status: :ok
         return
       else
@@ -31,18 +31,14 @@ class PluginsController < ApplicationController
 
     plugins = Plugin
     .includes([:tags, :user])
+    .where({ status: :confirmed })
     .order("id DESC")
     .paginate(:page => params[:page], :per_page => 10)
-
-    plugins = only_visible(plugins)
 
     render_format_include_everything plugins
   end
 
-  def latest_plugins
-    plugins = Plugin.where({ status: :confirmed }).limit(5).order("id DESC")
-    render json: plugins.to_json(:only => [:name, :short_name])
-  end
+
 
 
   def filter_by_tag
@@ -63,8 +59,6 @@ class PluginsController < ApplicationController
     .where(tags: { id: tag.id })
     .order("id DESC")
     .paginate(:page => params[:page], :per_page => limit)
-
-    plugins = only_visible(plugins)
 
     render_format_include_everything plugins
   end
@@ -145,24 +139,9 @@ class PluginsController < ApplicationController
 
     if @plugin.update(p)
       render_format_include_everything @plugin
-      #render json: @plugin.to_json(:include => { :tags => {:only => [:id, :short_name]}})
     else
       render json: @plugin.errors, status: :unprocessable_entity
     end
-  end
-
-  def accept_plugin
-    authorize Plugin
-    @plugin.status = Plugin.statuses[:confirmed]
-    @plugin.save!
-    render json: {}, status: :ok
-  end
-
-  def reject_plugin
-    authorize Plugin
-    @plugin.status = Plugin.statuses[:rejected]
-    @plugin.save!
-    render json: {}, status: :ok
   end
 
 
@@ -193,9 +172,8 @@ class PluginsController < ApplicationController
     plugins = Plugin
     .where("lower(name) LIKE lower(?)", "#{query}%")
     .paginate(:page => page, :per_page => 10)
+    .where({ status: :confirmed })
     .order('id DESC')
-
-    plugins = only_visible(plugins)
 
     plugins = [] if plugins.nil?
 
@@ -214,6 +192,7 @@ class PluginsController < ApplicationController
       plugins2.delete_if { |x| x.status != :confirmed }
     end
 
+
     result.sort_by! { |p| -p.id }
 
     render_format_include_everything result
@@ -227,11 +206,11 @@ class PluginsController < ApplicationController
   ), status: :ok
   end
 
-  def only_visible(query)
-    return query if query.nil?
-    return query if user_signed_in? && current_user.admin?
-    return query.where(status: :confirmed)
+  def latest_plugins
+    plugins = Plugin.where({ status: :confirmed }).limit(5).order("id DESC")
+    render json: plugins.to_json(:only => [:name, :short_name])
   end
+
 
   def set_plugin
     @plugin = Plugin.find(params[:id])

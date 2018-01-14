@@ -16,12 +16,9 @@ module Search
       query = model
       .paginate(:page => params[:page], :per_page => limit)
       .where("lower(#{attribute}) LIKE lower(?)", "#{params[:q]}%")
-      #render json: results, status: :ok
       return query
     end
 
     return model.none
-    #render json: [], status: :ok
   end
-
 end

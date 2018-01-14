@@ -21,15 +21,19 @@ Rails.application.routes.draw do
   resources :users, only: [:index, :show]
 
   namespace :plugins do
-    get '/', action: :index
+    get '/', action: :explore
     get '/:plugin_name', action: :show
     post '/', action: :create
     put '/:id', action: :update
     delete '/:id', action: :destroy
     delete '/:id/tags/:tag_id', action: :remove_tag
     post '/:id/tags', action: :add_tag
+  end
+
+  namespace :admin do
     post '/:id/reject', action: :reject_plugin
     post '/:id/accept', action: :accept_plugin
+    get '/pending', action: :get_pending_plugins
   end
 
 end
