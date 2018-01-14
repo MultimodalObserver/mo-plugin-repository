@@ -16,26 +16,23 @@ class PluginsController < ApplicationController
       return latest_plugins
     end
 
-    if params.has_key?(:q) && params[:q].length > 0
+    query = Plugin.none
 
-      if !params.has_key?(:include_tags_search)
-        query = get_search_results(params: params, model: Plugin, attribute: "name")
-        query = query.where({ status: :confirmed })
-        render json: query, status: :ok
-        return
-      else
-        get_mixed_search_results(params[:q])
-        return
-      end
+    if params.has_key?(:q) && params[:q].length > 0
+      query = get_search_results(params: params, model: Plugin, attribute: "name")
+    else
+
+      query = Plugin
+      .paginate(:page => params[:page], :per_page => 10)
+
     end
 
-    plugins = Plugin
-    .includes([:tags, :user])
+    query = query
     .where({ status: :confirmed })
+    .includes([:tags, :user])
     .order("id DESC")
-    .paginate(:page => params[:page], :per_page => 10)
 
-    render_format_include_everything plugins
+    render_format_include_everything query
   end
 
 
@@ -152,52 +149,6 @@ class PluginsController < ApplicationController
 
   private
 
-  # This method must render search results by searching plugins
-  # and plugins that belong to tags that are also searched.
-  # In other words, it renders an array of plugins that come from
-  # a mixed search (plugins that belong to the Plugin table and
-  # plugins that belong to tags).
-  #
-  # This method's behavior could be done in other ways, but always keep in mind
-  # that the purpose of this method is to simply search by a single query. It
-  # could be implemented using full-text search, etc.
-  #
-  # The most basic implementation is to find plugins
-  # by name (name%wildcard%) and to find tags also using a wildcard,
-  # and then get some plugins that belong to that tag.
-  def get_mixed_search_results(query)
-
-    page = params[:page].to_i
-
-    plugins = Plugin
-    .where("lower(name) LIKE lower(?)", "#{query}%")
-    .paginate(:page => page, :per_page => 10)
-    .where({ status: :confirmed })
-    .order('id DESC')
-
-    plugins = [] if plugins.nil?
-
-    tag = Tag.where("lower(short_name) LIKE lower(?)", "#{query}%").first
-
-    if tag.nil?
-      plugins2 = []
-    else
-      plugins2 = tag.plugins[(page-1)*10..(page * 10)-1]
-      plugins2 = [] if plugins2.nil?
-    end
-
-    result = plugins | plugins2
-
-    if !user_signed_in? || !current_user.admin?
-      plugins2.delete_if { |x| x.status != :confirmed }
-    end
-
-
-    result.sort_by! { |p| -p.id }
-
-    render_format_include_everything result
-
-  end
 
   def render_format_include_everything(plugin)
     render json: plugin.to_json(
