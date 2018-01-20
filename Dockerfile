@@ -16,8 +16,6 @@ ENV SECRET_KEY_BASE f3994e2804113227a147eff20e7fa5a333722216fe97ce3c21adadb11712
 
 COPY . /usr/src/app
 
-
-#EXPOSE 3000
 CMD ["rails", "server", "-b", "0.0.0.0"]
 
 

@@ -1,11 +1,13 @@
 # MO Plugin Repository
 
-[![Build Status](https://semaphoreci.com/api/v1/felovilches/mo-plugin-repository/branches/master/badge.svg)](https://semaphoreci.com/felovilches/mo-plugin-repository)
-
 Construido con `Ruby 2.4.0p0` y `Rails 5.1.3`
 
 
 ## Despliegue en Docker
+
+Utilizando el Dockerfile contenido en el proyecto se puede desplegar la aplicación en uno o varios servidores de aplicación. Al desplegarlo, se debe indicar la dirección y credenciales de la base de datos, dado que el container solo contiene la aplicación independiente, y no bases de datos.
+
+Primero se debe clonar el proyecto y ejecutar los comandos en la raíz.
 
 Se debe modificar las variables que aparecen al inicio.
 
@@ -19,20 +21,14 @@ databasename=dockerdb
 
 url="postgres://${user}:${password}@${hostname}:${port}/${databasename}"
 docker build -t morails .
+
+# Ejecutar solo para inicializar la base de datos. No ejecutar dos veces
 docker run -e DATABASE_URL=$url morails bundle exec rake db:migrate
 docker run -e DATABASE_URL=$url morails bundle exec rake db:seed
+
+# Comenzar la aplicación
 docker run -e DATABASE_URL=$url -p 3000:3000 -d morails
 ```
 
 
-## Despliegue en Heroku
-
-https://mo-plugin-repository.herokuapp.com/
-
-Reiniciar la base de datos con
-
-```bash
-heroku pg:reset database --confirm mo-plugin-repository
-heroku run rake db:migrate
-heroku run rake db:seed
-```
+En caso que el puerto `3000` esté ocupado en la máquina real, se puede mapear distinto usando por ejemplo `1234:3000`, en tal caso la aplicación queda ocupando el puerto 3000 dentro del container, pero 1234 en la máquina real.
