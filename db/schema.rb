@@ -33,17 +33,18 @@ ActiveRecord::Schema.define(version: 20180114210413) do
     t.integer "status", default: 0, null: false
     t.string "home_page"
     t.string "description"
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_plugins_on_name"
     t.index ["short_name"], name: "index_plugins_on_short_name"
+    t.index ["status"], name: "index_plugins_on_status"
     t.index ["user_id"], name: "index_plugins_on_user_id"
   end
 
   create_table "plugins_tags", id: false, force: :cascade do |t|
-    t.integer "plugin_id", null: false
-    t.integer "tag_id", null: false
+    t.bigint "plugin_id", null: false
+    t.bigint "tag_id", null: false
     t.index ["plugin_id", "tag_id"], name: "index_plugins_tags_on_plugin_id_and_tag_id", unique: true
   end
 

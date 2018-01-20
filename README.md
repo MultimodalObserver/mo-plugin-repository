@@ -4,6 +4,27 @@
 
 Construido con `Ruby 2.4.0p0` y `Rails 5.1.3`
 
+
+## Despliegue en Docker
+
+Se debe modificar las variables que aparecen al inicio.
+
+```bash
+
+user=dockeruser # Nombre de usuario
+password=dockerpass # Clave del usuario
+hostname=123.456.78.100
+port=5432
+databasename=dockerdb
+
+url="postgres://${user}:${password}@${hostname}:${port}/${databasename}"
+docker build -t morails .
+docker run -e DATABASE_URL=$url morails bundle exec rake db:migrate
+docker run -e DATABASE_URL=$url morails bundle exec rake db:seed
+docker run -e DATABASE_URL=$url -p 3000:3000 morails
+```
+
+
 ## Despliegue en Heroku
 
 https://mo-plugin-repository.herokuapp.com/

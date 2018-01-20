@@ -11,12 +11,19 @@ default: &default
 
 development:
   <<: *default
-  database: postgres_mo_repository
-  password: password
+  database: dockerdb
+  password: dockerpass
   pool: 5
-  username: postgres
+  username: dockeruser
   encoding: UTF-8
   host: localhost
+
+#database: postgres_mo_repository
+#password: password
+#pool: 5
+#username: postgres
+#encoding: UTF-8
+#host: localhost
 
 
 # Warning: The database defined as "test" will be erased and
