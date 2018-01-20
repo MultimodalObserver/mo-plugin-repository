@@ -9,7 +9,7 @@ Utilizando el Dockerfile contenido en el proyecto se puede desplegar la aplicaci
 
 Primero se debe clonar el proyecto y ejecutar los comandos en la raíz.
 
-Se debe modificar las variables que aparecen al inicio.
+Se debe modificar las variables que aparecen al inicio. Las claves de Recaptcha deben obtenerse registrando el sitio en Recaptcha (servicio gratuito de Google) y colocando ambas llaves, publica y privada. La single page app debe configurarse usando la misma llave publica (las instrucciones estan en su repositorio).
 
 ```bash
 
@@ -18,6 +18,8 @@ password=dockerpass # Clave del usuario
 hostname=123.456.78.100
 port=5432
 databasename=dockerdb
+recaptchapublic=123456789aefb4567 # Recaptcha API key publica
+recaptchasecret=123456789aefb4567 # Recaptcha API key privada
 
 url="postgres://${user}:${password}@${hostname}:${port}/${databasename}"
 docker build -t morails .
@@ -27,7 +29,7 @@ docker run -e DATABASE_URL=$url morails bundle exec rake db:migrate
 docker run -e DATABASE_URL=$url morails bundle exec rake db:seed
 
 # Comenzar la aplicación
-docker run -e DATABASE_URL=$url -p 3000:3000 -d morails
+docker run -e DATABASE_URL=$url -e RECAPTCHA_SITE_KEY=$recaptchapublic -e RECAPTCHA_SECRET_KEY=$recaptchasecret -p 3000:3000 -d morails
 ```
 
 
