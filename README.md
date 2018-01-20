@@ -21,7 +21,7 @@ url="postgres://${user}:${password}@${hostname}:${port}/${databasename}"
 docker build -t morails .
 docker run -e DATABASE_URL=$url morails bundle exec rake db:migrate
 docker run -e DATABASE_URL=$url morails bundle exec rake db:seed
-docker run -e DATABASE_URL=$url -p 3000:3000 morails
+docker run -e DATABASE_URL=$url -p 3000:3000 -d morails
 ```
 
 
