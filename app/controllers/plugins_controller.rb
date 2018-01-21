@@ -76,11 +76,14 @@ class PluginsController < ApplicationController
     plugin = Plugin.new(plugin_params)
     plugin.user_id = current_user.id
 
+    ActiveRecord::Base.transaction do
 
-    if plugin_params.has_key?(:repo_type) && verify_recaptcha(model: plugin) && plugin.save
-      render json: plugin, status: :created
-    else
-      render json: plugin.errors, status: :unprocessable_entity
+      if plugin_params.has_key?(:repo_type) && plugin.valid? && verify_recaptcha(model: plugin) && plugin.save
+        render json: plugin, status: :created
+      else
+        render json: plugin.errors, status: :unprocessable_entity
+      end
+
     end
   end
 
