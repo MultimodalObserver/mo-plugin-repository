@@ -4,9 +4,10 @@ Rails.application.routes.draw do
 
   get '/', to: 'home#index'
 
-  resources :tags, except: [:show]
+  #resources :tags, except: [:show]
 
   scope :tags do
+    get '/', controller: :tags, action: :index
     get '/:tag_name', controller: :tags, action: :show
     get '/:tag_name/plugins', controller: :plugins, action: :filter_by_tag
   end
@@ -18,7 +19,7 @@ Rails.application.routes.draw do
     put '/change_role', action: :change_role
   end
 
-  resources :users, only: [:index, :show]
+  #resources :users, only: [:index, :show]
 
   namespace :plugins do
     get '/', action: :explore
