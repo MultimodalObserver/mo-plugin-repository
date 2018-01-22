@@ -21,8 +21,8 @@ RSpec.describe TagsController, type: :controller do
 
   describe "GET #show" do
     it "returns a success response" do
-      FactoryGirl.create(:tag, :short_name => "Short-name1 ")
-      get :show, params: { :tag_name => "short-name1" }
+      FactoryGirl.create(:tag, :short_name => "  Short-tAG-naMe1 ")
+      get :show, params: { :tag_name => "short-tag-name1" }
       expect(response).to be_success
     end
   end
@@ -41,12 +41,14 @@ RSpec.describe TagsController, type: :controller do
       get :index, params: { q: "he" }
       expect(response).to be_success
       parsed = JSON.parse response.body
-      expect(parsed.length).to eq 3
+      expect(parsed.length).to eq 5
       expect(parsed[0]["short_name"]).to eq "hello"
       expect(parsed[1]["short_name"]).to eq "hellooo"
       expect(parsed[2]["short_name"]).to eq "hell"
+      expect(parsed[3]["short_name"]).to eq "helllll"
+      expect(parsed[4]["short_name"]).to eq "helloooooo"
 
-      get :index, params: { q: "he", limit: 15 }
+      get :index, params: { q: "hEL" }
       expect(response).to be_success
       parsed = JSON.parse response.body
       expect(parsed.length).to eq 5
@@ -56,29 +58,6 @@ RSpec.describe TagsController, type: :controller do
       expect(parsed[3]["short_name"]).to eq "helllll"
       expect(parsed[4]["short_name"]).to eq "helloooooo"
 
-      get :index, params: { q: "he" }
-      expect(response).to be_success
-      parsed = JSON.parse response.body
-      expect(parsed.length).to eq 3
-      expect(parsed[0]["short_name"]).to eq "hello"
-      expect(parsed[1]["short_name"]).to eq "hellooo"
-      expect(parsed[2]["short_name"]).to eq "hell"
-
-      get :index, params: { q: "Hello", limit: 15 }
-      expect(response).to be_success
-      parsed = JSON.parse response.body
-      expect(parsed.length).to eq 3
-      expect(parsed[0]["short_name"]).to eq "hello"
-      expect(parsed[1]["short_name"]).to eq "hellooo"
-      expect(parsed[2]["short_name"]).to eq "helloooooo"
-
-      get :index, params: { q: "Hello", limit: 2 }
-      expect(response).to be_success
-      parsed = JSON.parse response.body
-      expect(parsed.length).to eq 2
-      expect(parsed[0]["short_name"]).to eq "hello"
-      expect(parsed[1]["short_name"]).to eq "hellooo"
-
       get :index, params: { q: "A", limit: 2 }
       expect(response).to be_success
       parsed = JSON.parse response.body
@@ -87,42 +66,8 @@ RSpec.describe TagsController, type: :controller do
     end
   end
 
-  describe "POST #create" do
 
-    login_as_admin
-
-    it "creates a new Tag" do
-      expect {
-        post :create, params: { tag: FactoryGirl.build(:tag).attributes }
-      }.to change(Tag, :count).by(1)
-    end
-
-    it "creates a tag that already exists" do
-      FactoryGirl.create(:tag, short_name: " VeRy-beautifuL-tag   ")
-      post :create, params: { tag: FactoryGirl.attributes_for(:tag, short_name: "   very-BEAUTIFUL-tAG   ") }
-      expect(response).to have_http_status(:unprocessable_entity)
-    end
-
-    context "with valid params" do
-
-      it "renders a JSON response with the new tag" do
-        post :create, params: { tag: FactoryGirl.build(:tag).attributes }
-        expect(response).to have_http_status(:created)
-        expect(response.content_type).to eq('application/json')
-        expect(response.location).to eq(tag_url(Tag.last))
-      end
-    end
-
-    context "with invalid params" do
-      it "renders a JSON response with errors for the new tag" do
-        post :create, params: { tag: FactoryGirl.build(:tag, short_name: "aaa-2 a s").attributes }
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/json')
-      end
-    end
-  end
-
-
+=begin
   describe "Unauthorized" do
     login_as_moderator
     it "cannot update" do
@@ -134,7 +79,6 @@ RSpec.describe TagsController, type: :controller do
       expect(response).to have_http_status(:unauthorized)
     end
   end
-
 
 
   describe "PUT #update" do
@@ -198,5 +142,6 @@ RSpec.describe TagsController, type: :controller do
       }.to change(Tag, :count).by(-1)
     end
   end
+=end
 
 end

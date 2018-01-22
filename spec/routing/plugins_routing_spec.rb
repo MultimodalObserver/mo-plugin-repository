@@ -3,8 +3,8 @@ require "rails_helper"
 RSpec.describe PluginsController, type: :routing do
   describe "routing" do
 
-    it "routes to #index" do
-      expect(:get => "/plugins").to route_to("plugins#index")
+    it "routes to #explore" do
+      expect(:get => "/plugins").to route_to("plugins#explore")
     end
 
     it "routes to #show" do

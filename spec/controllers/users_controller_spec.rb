@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
 
+=begin
   describe "GET #index" do
     it "returns a success response" do
       get :index
@@ -15,6 +16,7 @@ RSpec.describe UsersController, type: :controller do
       expect(response).to be_success
     end
   end
+=end
 
 =begin
   describe "PUT #change_status (authorization only). Normal user changes someone's status" do

@@ -55,13 +55,23 @@ class PluginsController < ApplicationController
     .limit(1)
     .find_by(:short_name => params[:plugin_name].downcase)
 
-    if !plugin.nil? && plugin.status != "confirmed"
+    if plugin.nil?
+      # Plugin is null
 
-      if current_user.admin?
-        # Don't nullify plugin
-      else !user_signed_in? || plugin.user_id != current_user.id
-        plugin = nil
-      end
+    elsif plugin.status == "confirmed"
+      # Plugin can be seen
+
+    elsif !user_signed_in?
+      plugin = nil
+
+    elsif current_user.admin?
+      # Plugin can be seen
+
+    elsif plugin.user_id == current_user.id
+      # Plugin can be seen
+
+    else
+      plugin = nil
     end
 
     raise ActiveRecord::RecordNotFound if plugin.nil?
