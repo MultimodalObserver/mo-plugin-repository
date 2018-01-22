@@ -94,13 +94,7 @@ class PluginsController < ApplicationController
   def add_tag
     authorize @plugin
 
-    tag = Tag.find_by(short_name: params[:tag_name])
-
-    if tag.nil?
-      tag = Tag.new
-      tag.short_name = params[:tag_name]
-      tag.save!
-    end
+    tag = Tag.find_or_create_by(short_name: params[:tag_name])
 
     @plugin.tags << tag
     render json: tag.as_json, status: :ok

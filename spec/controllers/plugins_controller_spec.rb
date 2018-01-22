@@ -21,12 +21,42 @@ RSpec.describe PluginsController, type: :controller do
     end
   end
 
+
+  describe "DELETE #remove_tag" do
+    user = login_as FactoryGirl.create(:user)
+
+    it "associates tag to the plugin" do
+      plugin = FactoryGirl.create(:plugin, user: user)
+
+      # Add tag
+      post :add_tag, params: { id: plugin.id, tag_name: "xxxxxxx77777" }
+      plugin.reload
+      expect(plugin.tags.length).to eq 1
+
+      tag_id = plugin.tags[0].id
+
+      # Remove tag
+      post :remove_tag, params: { id: plugin.id, tag_id: tag_id }
+      plugin.reload
+      expect(plugin.tags.length).to eq 0
+
+    end
+  end
+
   describe "POST #add_tag" do
     user = login_as FactoryGirl.create(:user)
 
+    it "associates tag to the plugin" do
+      plugin = FactoryGirl.create(:plugin, user: user)
+      expect(plugin.tags.length).to eq 0
+      post :add_tag, params: { id: plugin.id, tag_name: "abcdef" }
+      plugin.reload
+      expect(plugin.tags.length).to eq 1
+      expect(plugin.tags[0].short_name).to eq "abcdef"
+    end
+
     it "doesn't add duplicate associations" do
 
-      tag = FactoryGirl.create(:tag)
       plugin = FactoryGirl.create(:plugin, user: user)
 
       expect{
@@ -40,9 +70,24 @@ RSpec.describe PluginsController, type: :controller do
       expect{
         post :add_tag, params: { id: plugin.id, tag_name: "  abcdef" }
       }.to raise_error ActiveRecord::RecordInvalid
+    end
 
+
+    it "doesn't add the same tag again, and uses find_or_create_by without raising errors" do
+
+      plugin1 = FactoryGirl.create(:plugin, user: user)
+      plugin2 = FactoryGirl.create(:plugin, user: user)
+
+      expect{
+        post :add_tag, params: { id: plugin1.id, tag_name: "asdfghjkl321654987" }
+      }.to change(Tag, :count).by 1
+
+      expect{
+        post :add_tag, params: { id: plugin2.id, tag_name: "asdfghjkl321654987" }
+      }.to change(Tag, :count).by 0
 
     end
+
   end
 
 =begin
