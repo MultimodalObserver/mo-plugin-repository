@@ -32,6 +32,18 @@ FactoryGirl.define do
       repo_name r[:repo_name]
     }
 
+    trait :confirmed {
+      status "confirmed"
+    }
+
+    trait :pending {
+      status "pending"
+    }
+
+    trait :rejected {
+      status "rejected"
+    }
+
     association :user
 
   end

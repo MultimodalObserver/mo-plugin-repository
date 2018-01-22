@@ -282,8 +282,4 @@ RSpec.describe PluginsController, type: :controller do
   end
 
 
-
-
-
-
 end
