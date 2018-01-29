@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
   enum role: [ :normal_user, :moderator, :admin ]
 
   validates :nickname, presence: true, uniqueness: true
-  validates :nickname, format: { with: /\A[a-z0-9-]+\z/, message: "Only a-z, numbers and dash are allowed." }
+  validates :nickname, format: { with: /\A[a-z0-9-]+\z/, message: "Only a-z, numbers and dashes are allowed." }
   auto_strip_attributes :nickname, :squish => true
 
   validates :nickname, length: {

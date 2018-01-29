@@ -23,6 +23,16 @@ class UsersController < ApplicationController
   end
 =end
 
+  def change_username
+    current_user.nickname = params[:new_username]
+    if current_user.save
+      render json: current_user, status: :ok
+    else
+      render json: current_user.errors, status: :unprocessable_entity
+    end
+  end
+
+
   def me
     render json: current_user
   end

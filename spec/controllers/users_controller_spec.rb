@@ -2,6 +2,39 @@ require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
 
+  describe "PUT #change_username" do
+
+    user = login_as FactoryGirl.create(:user)
+
+    it "changes username and formats it correctly" do
+      put :change_username, params: { new_username: '  nEwusernAme111 ' }
+      expect(response).to be_success
+      expect(user.nickname).to eq 'newusername111'
+    end
+
+    it "when updated correctly, the response contains the new username (formatted correctly)" do
+      put :change_username, params: { new_username: '  nEwusernAme111 ' }
+      res = JSON.parse (response.body)
+      expect(res["nickname"]).to be_a String
+      expect(res["nickname"]).to eq 'newusername111'
+    end
+
+    it "returns error if param isn't present" do
+      put :change_username, params: { }
+      res = JSON.parse (response.body)
+      expect(response).to_not be_success
+      expect(res["nickname"]).to be_an Array
+    end
+
+    it "returns error if param isn't correct" do
+      put :change_username, params: { new_username: '34($($($@@@------**/)))' }
+      res = JSON.parse (response.body)
+      expect(response).to_not be_success
+      expect(res["nickname"]).to be_an Array
+    end
+
+  end
+
 =begin
   describe "GET #index" do
     it "returns a success response" do

@@ -14,9 +14,10 @@ Rails.application.routes.draw do
 
   namespace :users do
     get '/me', action: :me
+    put '/change_username', action: :change_username
     get '/my_plugins', action: :my_plugins
-    put '/change_status', action: :change_status
-    put '/change_role', action: :change_role
+    #put '/change_status', action: :change_status
+    #put '/change_role', action: :change_role
   end
 
   #resources :users, only: [:index, :show]
