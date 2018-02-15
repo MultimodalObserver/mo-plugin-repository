@@ -18,8 +18,26 @@ password=dockerpass # Clave del usuario
 hostname=123.456.78.100
 port=5432
 databasename=dockerdb
+
+# Obtener claves de Recaptcha
+# https://developers.google.com/recaptcha/intro
 recaptchapublic=123456789aefb4567 # Recaptcha API key publica
 recaptchasecret=123456789aefb4567 # Recaptcha API key privada
+
+# Esta variable corresponde a la URL base con la cual se construyen los correos.
+# No tiene que ver con como se 'envian' los correos, simplemente es para escribir
+# correctamente los enlaces en el contenido del correo, para que cuando el usuario
+# haga clic, redireccione correctamente hacia donde deben ir
+linksbase=mo.usach.cl/repos/
+
+# En esta pregunta de Stackoverflow aparece informacion sobre como configurar la cuenta
+# de Gmail para poder enviar correos desde una aplicacion externa.
+# https://stackoverflow.com/questions/33918448/ruby-sending-mail-via-gmail-smtp
+gmailusername=correo.para.mo@gmail.com
+gmailpassword=123123123 # contrasena del correo
+
+# No hay mas variables de entorno desde ahora en adelante #
+###########################################################
 
 url="postgres://${user}:${password}@${hostname}:${port}/${databasename}"
 docker build -t morails .
@@ -29,7 +47,7 @@ docker run -e DATABASE_URL=$url morails bundle exec rake db:migrate
 docker run -e DATABASE_URL=$url morails bundle exec rake db:seed
 
 # Comenzar la aplicación
-docker run -e DATABASE_URL=$url -e RECAPTCHA_SITE_KEY=$recaptchapublic -e RECAPTCHA_SECRET_KEY=$recaptchasecret -p 3000:3000 -d morails
+docker run -e DATABASE_URL=$url -e RECAPTCHA_SITE_KEY=$recaptchapublic -e RECAPTCHA_SECRET_KEY=$recaptchasecret -e SMTP_GMAIL_LINKS_BASE=$linksbase -e SMTP_GMAIL_USERNAME=$gmailusername -e SMTP_GMAIL_PASSWORD=$gmailpassword -p 3000:3000 -d morails
 ```
 
 

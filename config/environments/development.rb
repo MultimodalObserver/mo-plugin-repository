@@ -3,7 +3,14 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = { :address => 'localhost', :port => 1025 }
+  config.action_mailer.smtp_settings = {
+    :address              => "smtp.gmail.com",
+    :port                 => 587,
+    :user_name            => Rails.application.secrets.smtp_gmail_username,
+    :password             => Rails.application.secrets.smtp_gmail_password,
+    :authentication       => 'plain',
+    :enable_starttls_auto => true
+  }
 
 
   # In the development environment your application's code is reloaded on
